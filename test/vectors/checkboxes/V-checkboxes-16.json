@@ -1,0 +1,12 @@
+{
+  "id": "V-checkboxes-16",
+  "name": "a task in a code fence nested in a list item (fence indented 4) is not tappable",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "- item\n    ```\n    - [ ] in code\n    ```\n- [ ] real"
+  },
+  "expected": [
+    { "type": "markdown", "content": "- item\n    ```\n    - [ ] in code\n    ```" },
+    { "type": "checkbox", "line": 5, "checked": false, "indent": 0, "text": "real" }
+  ]
+}

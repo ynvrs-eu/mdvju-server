@@ -1,0 +1,20 @@
+{
+  "id": "B-recent-04",
+  "name": "nextCursor is null once the candidates are exhausted",
+  "vault": {
+    "files": {
+      "Notes/Only.md": "content"
+    }
+  },
+  "steps": [
+    {
+      "op": "recent",
+      "expected": {
+        "paths": [
+          "Notes/Only.md"
+        ],
+        "nextCursor": null
+      }
+    }
+  ]
+}

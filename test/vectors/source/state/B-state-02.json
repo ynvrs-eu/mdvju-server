@@ -1,0 +1,24 @@
+{
+  "id": "B-state-02",
+  "name": "home accepts a path that doesn't exist (characterisation)",
+  "vault": {
+    "files": {}
+  },
+  "steps": [
+    {
+      "op": "setHome",
+      "path": "Nowhere/Gone.md",
+      "expected": {
+        "homePath": "Nowhere/Gone.md",
+        "favourites": []
+      }
+    },
+    {
+      "op": "stored",
+      "expected": {
+        "homePath": "Nowhere/Gone.md",
+        "favourites": []
+      }
+    }
+  ]
+}

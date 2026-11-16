@@ -1,0 +1,24 @@
+{
+  "id": "B-resolve-11",
+  "name": "an embed that doesn't resolve is null",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Media/pic.png": "x",
+      "_attachments/mobility-cat-cow.gif": "fake gif"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolveEmbed",
+      "link": "nope.png",
+      "expected": null
+    },
+    {
+      "op": "resolveEmbed",
+      "link": "nonexistent.gif",
+      "expected": null
+    }
+  ]
+}

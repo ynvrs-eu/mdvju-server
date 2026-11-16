@@ -1,0 +1,20 @@
+{
+  "id": "B-state-05",
+  "name": "empty defaults before anything has been written, and nothing stored",
+  "vault": {
+    "files": {}
+  },
+  "steps": [
+    {
+      "op": "state",
+      "expected": {
+        "homePath": null,
+        "favourites": []
+      }
+    },
+    {
+      "op": "stored",
+      "expected": null
+    }
+  ]
+}

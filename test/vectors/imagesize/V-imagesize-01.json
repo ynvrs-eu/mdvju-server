@@ -1,0 +1,28 @@
+[
+  {
+    "id": "V-imagesize-01a",
+    "name": "PNG: the fixture image",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/image.png"
+    },
+    "expected": {
+      "width": 32,
+      "height": 32
+    }
+  },
+  {
+    "id": "V-imagesize-01b",
+    "name": "PNG: signature and IHDR only, a tall screenshot",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 04 92 00 00 09 e4 08 06 00 00 00 56 41 4b 03"
+      ]
+    },
+    "expected": {
+      "width": 1170,
+      "height": 2532
+    }
+  }
+]

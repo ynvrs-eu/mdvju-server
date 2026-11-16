@@ -1,0 +1,28 @@
+{
+  "id": "V-checkboxes-12",
+  "name": "a CRLF task line is tappable",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "- [ ] crlf\r\n- [x] done\r\n"
+  },
+  "expected": [
+    {
+      "type": "checkbox",
+      "line": 1,
+      "checked": false,
+      "indent": 0,
+      "text": "crlf"
+    },
+    {
+      "type": "checkbox",
+      "line": 2,
+      "checked": true,
+      "indent": 0,
+      "text": "done"
+    },
+    {
+      "type": "markdown",
+      "content": ""
+    }
+  ]
+}

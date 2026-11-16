@@ -1,0 +1,24 @@
+{
+  "id": "V-checkboxes-01",
+  "name": "- [ ] a / - [x] b -> pieces with raw line numbers and state",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "- [ ] a\n- [x] b"
+  },
+  "expected": [
+    {
+      "type": "checkbox",
+      "line": 1,
+      "checked": false,
+      "indent": 0,
+      "text": "a"
+    },
+    {
+      "type": "checkbox",
+      "line": 2,
+      "checked": true,
+      "indent": 0,
+      "text": "b"
+    }
+  ]
+}

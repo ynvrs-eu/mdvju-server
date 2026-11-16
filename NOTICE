@@ -1,0 +1,10 @@
+mdvju server
+Copyright (C) 2026 Michał Wojtera
+
+Licensed under the GNU Affero General Public License, version 3 (see LICENSE).
+
+Trademark: "mdvju" and its logo are the names of Michał Wojtera's app and
+service. The licence covers the code, not the name. A fork or a modified
+version may not call itself mdvju or present itself as the official mdvju
+server; give it a different name. Saying truthfully that it's based on, or
+works with, the mdvju server is fine.

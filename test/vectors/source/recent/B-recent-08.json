@@ -1,0 +1,25 @@
+{
+  "id": "B-recent-08",
+  "name": "a non-numeric cursor is a 400",
+  "vault": {
+    "files": {
+      "Notes/Oldest.md": "Oldest.md",
+      "Notes/Middle.md": "Middle.md",
+      "Notes/Newest.md": "Newest.md"
+    },
+    "mtimes": {
+      "Notes/Oldest.md": "2026-09-01T12:00:00.000Z",
+      "Notes/Middle.md": "2026-09-01T12:00:01.000Z",
+      "Notes/Newest.md": "2026-09-01T12:00:02.000Z"
+    }
+  },
+  "steps": [
+    {
+      "op": "recent",
+      "cursor": "not-a-number",
+      "expected": {
+        "status": 400
+      }
+    }
+  ]
+}

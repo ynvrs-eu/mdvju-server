@@ -1,0 +1,36 @@
+{
+  "name": "mdvju-server",
+  "version": "0.1.0",
+  "description": "The server for the mdvju iPhone app: serves an Obsidian-style Markdown vault from your own machine",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "author": "Michał Wojtera",
+  "type": "commonjs",
+  "main": "dist/src/server.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/server.js",
+    "dev": "ts-node src/server.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.19.2",
+    "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "B-tree-03",
+  "name": "a subfolder, with vault-relative paths",
+  "vault": {
+    "files": {
+      "zeta.md": "z",
+      "Alpha.md": "a",
+      "image.png": "x",
+      ".hidden.md": "h",
+      ".obsidian/app.md": "o",
+      "Projects/Plan.md": "p",
+      "Projects/Deep/Note.md": "n"
+    },
+    "folders": [
+      "_ops"
+    ]
+  },
+  "steps": [
+    {
+      "op": "tree",
+      "path": "Projects",
+      "expected": {
+        "folders": [
+          "Projects/Deep"
+        ],
+        "files": [
+          "Projects/Plan.md"
+        ]
+      }
+    }
+  ]
+}

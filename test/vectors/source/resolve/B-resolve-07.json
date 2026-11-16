@@ -1,0 +1,29 @@
+{
+  "id": "B-resolve-07",
+  "name": "notes inside dot-folders never resolve, by name or by alias",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      ".obsidian/Secret.md": "---\naliases: [hidden-alias]\n---\nx\n"
+    }
+  },
+  "readNotes": true,
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "Secret",
+      "expected": null
+    },
+    {
+      "op": "resolve",
+      "link": ".obsidian/Secret",
+      "expected": null
+    },
+    {
+      "op": "resolve",
+      "link": "hidden-alias",
+      "expected": null
+    }
+  ]
+}

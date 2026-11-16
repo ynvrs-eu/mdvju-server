@@ -1,0 +1,24 @@
+{
+  "id": "B-search-01",
+  "name": "file-name matches rank before folder-only matches, then shorter paths first",
+  "vault": {
+    "files": {
+      "fixture/a.md": "x",
+      "deep/er/fixture-notes.md": "x",
+      "fixture.md": "x",
+      "zz/Fixture Two.md": "x"
+    }
+  },
+  "steps": [
+    {
+      "op": "search",
+      "q": "FIXTURE",
+      "expected": [
+        "fixture.md",
+        "zz/Fixture Two.md",
+        "deep/er/fixture-notes.md",
+        "fixture/a.md"
+      ]
+    }
+  ]
+}

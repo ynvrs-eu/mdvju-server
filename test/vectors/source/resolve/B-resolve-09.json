@@ -1,0 +1,23 @@
+{
+  "id": "B-resolve-09",
+  "name": "a wikilink that doesn't resolve is null",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Notes/Hello.md": "# Hello\n\nworld"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "Nothing Here",
+      "expected": null
+    },
+    {
+      "op": "resolve",
+      "link": "Nonexistent Note",
+      "expected": null
+    }
+  ]
+}

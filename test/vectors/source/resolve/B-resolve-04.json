@@ -1,0 +1,25 @@
+{
+  "id": "B-resolve-04",
+  "name": "`aliases: [\"a, b\", c]` makes `a, b` resolve",
+  "knownBug": "Frontmatter parsing",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Aliased.md": "---\naliases: [\"a, b\", c]\n---\nbody\n"
+    }
+  },
+  "readNotes": true,
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "a, b",
+      "expected": "Aliased.md"
+    },
+    {
+      "op": "resolve",
+      "link": "c",
+      "expected": "Aliased.md"
+    }
+  ]
+}

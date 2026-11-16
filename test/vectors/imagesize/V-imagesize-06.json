@@ -1,0 +1,64 @@
+[
+  {
+    "id": "V-imagesize-06a",
+    "name": "JPEG whose SOF comes after 100 KB of APP1 (two XMP segments, a segment holds at most 64 KB)",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8",
+        "ff e1 c8 02 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 51171
+        },
+        "ff e1 c8 02 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 51171
+        },
+        "ff c0 00 11 08 04 38 07 80 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  {
+    "id": "V-imagesize-06b",
+    "name": "a SOF past the first 256 KiB is not looked for: null",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8",
+        "ff e1 ea 62 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 59971
+        },
+        "ff e1 ea 62 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 59971
+        },
+        "ff e1 ea 62 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 59971
+        },
+        "ff e1 ea 62 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 59971
+        },
+        "ff e1 ea 62 68 74 74 70 3a 2f 2f 6e 73 2e 61 64 6f 62 65 2e 63 6f 6d 2f 78 61 70 2f 31 2e 30 2f 00",
+        {
+          "fill": "20",
+          "count": 59971
+        },
+        "ff c0 00 11 08 04 38 07 80 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": null
+  }
+]

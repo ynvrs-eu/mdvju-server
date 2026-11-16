@@ -1,0 +1,18 @@
+{
+  "id": "B-resolve-06",
+  "name": "`Folder/Note.md`, with the extension, resolves by path",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Note.md": "# root note with the same name\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "Folder/Note.md",
+      "expected": "Folder/Note.md"
+    }
+  ]
+}

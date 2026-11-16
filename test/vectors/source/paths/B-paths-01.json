@@ -1,0 +1,35 @@
+{
+  "id": "B-paths-01",
+  "name": "every folder and note at every level, as the tree lists them: no non-markdown files or dot-entries",
+  "vault": {
+    "files": {
+      "Home.md": "x",
+      "Projects/Plan.md": "x",
+      "Projects/Deep/Note.md": "x",
+      "Attachments/pic.png": "x",
+      ".obsidian/app.md": "x",
+      "Projects/.hidden.md": "x"
+    },
+    "folders": [
+      "Empty"
+    ]
+  },
+  "steps": [
+    {
+      "op": "paths",
+      "expected": {
+        "folders": [
+          "Attachments",
+          "Empty",
+          "Projects",
+          "Projects/Deep"
+        ],
+        "files": [
+          "Home.md",
+          "Projects/Deep/Note.md",
+          "Projects/Plan.md"
+        ]
+      }
+    }
+  ]
+}

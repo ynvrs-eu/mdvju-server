@@ -1,0 +1,17 @@
+{
+  "id": "B-resolve-03",
+  "name": "`Note|Alias` resolves to the note (fixed)",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "Note|Shown Text",
+      "expected": "Folder/Note.md"
+    }
+  ]
+}

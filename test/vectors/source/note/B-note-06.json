@@ -1,0 +1,118 @@
+{
+  "id": "B-note-06",
+  "name": "an invalid checkbox write is a 400, a missing note a 404, a note through a symlink out of the vault a 400, nothing written (B-checkbox-03, -18)",
+  "vault": {
+    "files": {
+      "Tasks.md": "- [ ] task\n",
+      ".hidden/Tasks.md": "- [ ] task\n",
+      "Tasks.txt": "- [ ] task\n"
+    },
+    "escapeSymlink": true
+  },
+  "steps": [
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 0,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 1.5,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": "1",
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 1,
+      "checked": "yes",
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 1,
+      "checked": true,
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": ".hidden/Tasks.md",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.txt",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "../Tasks.md",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "escape/tasks.md",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "- [ ] outside task",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Missing.md",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 404
+      }
+    },
+    {
+      "op": "note",
+      "path": "Tasks.md",
+      "expected": "- [ ] task\n"
+    }
+  ]
+}

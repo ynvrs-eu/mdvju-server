@@ -1,0 +1,30 @@
+[
+  {
+    "id": "V-imagesize-04a",
+    "name": "JPEG baseline (SOF0) after JFIF",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff c0 00 11 08 01 e0 02 80 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 640,
+      "height": 480
+    }
+  },
+  {
+    "id": "V-imagesize-04b",
+    "name": "JPEG progressive (SOF2): a DHT (C4) before it is not a frame header, fill bytes before a marker are skipped",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff c4 00 13 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff ff c2 00 11 08 0b d0 0f c0 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 4032,
+      "height": 3024
+    }
+  }
+]

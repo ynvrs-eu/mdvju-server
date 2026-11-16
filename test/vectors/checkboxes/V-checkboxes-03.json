@@ -1,0 +1,31 @@
+{
+  "id": "V-checkboxes-03",
+  "name": "indented subtasks keep their indent width in characters",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "- [ ] parent\n    - [ ] child\n\t- [x] tab child"
+  },
+  "expected": [
+    {
+      "type": "checkbox",
+      "line": 1,
+      "checked": false,
+      "indent": 0,
+      "text": "parent"
+    },
+    {
+      "type": "checkbox",
+      "line": 2,
+      "checked": false,
+      "indent": 4,
+      "text": "child"
+    },
+    {
+      "type": "checkbox",
+      "line": 3,
+      "checked": true,
+      "indent": 1,
+      "text": "tab child"
+    }
+  ]
+}

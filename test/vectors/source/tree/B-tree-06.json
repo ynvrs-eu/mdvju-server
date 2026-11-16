@@ -1,0 +1,34 @@
+{
+  "id": "B-tree-06",
+  "name": "a path escaping the vault is a 400",
+  "vault": {
+    "files": {
+      "zeta.md": "z",
+      "Alpha.md": "a",
+      "image.png": "x",
+      ".hidden.md": "h",
+      ".obsidian/app.md": "o",
+      "Projects/Plan.md": "p",
+      "Projects/Deep/Note.md": "n"
+    },
+    "folders": [
+      "_ops"
+    ]
+  },
+  "steps": [
+    {
+      "op": "tree",
+      "path": "../",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "tree",
+      "path": "Projects/../..",
+      "expected": {
+        "status": 400
+      }
+    }
+  ]
+}

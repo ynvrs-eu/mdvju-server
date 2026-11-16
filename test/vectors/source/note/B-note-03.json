@@ -1,0 +1,37 @@
+{
+  "id": "B-note-03",
+  "name": "a note's version: reading it again unchanged is not modified; a checkbox write changes it (B-file-04)",
+  "vault": {
+    "files": {
+      "Tasks.md": "# Tasks\n\n- [ ] first <!-- sp:abc -->\n  - [x] nested\n- [ ] last\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "note",
+      "path": "Tasks.md",
+      "expected": "# Tasks\n\n- [ ] first <!-- sp:abc -->\n  - [x] nested\n- [ ] last\n"
+    },
+    {
+      "op": "noteUnchanged",
+      "path": "Tasks.md",
+      "expected": true
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 5,
+      "checked": true,
+      "expectedLine": "- [ ] last",
+      "expected": {
+        "baseMatched": false,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "noteUnchanged",
+      "path": "Tasks.md",
+      "expected": false
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "V-checkboxes-07a",
+    "name": "toggle on a line that doesn't exist -> unchanged",
+    "input": {
+      "op": "checkboxToggle",
+      "raw": "- [ ] a\n- [x] b",
+      "line": 9,
+      "checked": true
+    },
+    "expected": "- [ ] a\n- [x] b"
+  },
+  {
+    "id": "V-checkboxes-07b",
+    "name": "toggle on a line that isn't a task -> unchanged",
+    "input": {
+      "op": "checkboxToggle",
+      "raw": "# T\n- [ ] a",
+      "line": 1,
+      "checked": true
+    },
+    "expected": "# T\n- [ ] a"
+  }
+]

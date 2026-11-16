@@ -1,0 +1,67 @@
+{
+  "id": "B-state-09",
+  "name": "a missing, empty, non-string or vault-escaping path is a 400, and nothing is stored",
+  "vault": {
+    "files": {}
+  },
+  "steps": [
+    {
+      "op": "setHome",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "setHome",
+      "path": "",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "setHome",
+      "path": 42,
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "setHome",
+      "path": "../outside.md",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": "",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": 42,
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": "../outside.md",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "stored",
+      "expected": null
+    }
+  ]
+}

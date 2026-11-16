@@ -1,0 +1,18 @@
+{
+  "id": "B-search-07",
+  "name": "nothing when nothing matches",
+  "vault": {
+    "files": {
+      "Notes/Hello World.md": "hi",
+      "Notes/Other.md": "other",
+      "Diary/2026-09-18.md": "diary"
+    }
+  },
+  "steps": [
+    {
+      "op": "search",
+      "q": "nonexistent",
+      "expected": []
+    }
+  ]
+}

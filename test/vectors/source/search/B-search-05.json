@@ -1,0 +1,20 @@
+{
+  "id": "B-search-05",
+  "name": "matches a folder name too, not just the basename",
+  "vault": {
+    "files": {
+      "Notes/Hello World.md": "hi",
+      "Notes/Other.md": "other",
+      "Diary/2026-09-18.md": "diary"
+    }
+  },
+  "steps": [
+    {
+      "op": "search",
+      "q": "diary",
+      "expected": [
+        "Diary/2026-09-18.md"
+      ]
+    }
+  ]
+}

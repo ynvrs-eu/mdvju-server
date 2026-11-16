@@ -1,0 +1,9 @@
+{
+  "id": "V-checkboxes-08",
+  "name": "strip-for-diff -> plain '- [ ] ' / '- [x] ' with no line numbers (X normalised to x)",
+  "input": {
+    "op": "checkboxStripForDiff",
+    "raw": "- [ ] a\n- [X] b\n  - [x] c\nplain"
+  },
+  "expected": "- [ ] a\n- [x] b\n  - [x] c\nplain"
+}

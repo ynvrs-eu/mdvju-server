@@ -1,0 +1,65 @@
+{
+  "id": "B-state-01",
+  "name": "a toggle on a corrupt stored state doesn't lose it (fixed)",
+  "vault": {
+    "files": {},
+    "state": "{\"homePath\":\"Home.md\",\"favourites\":[\"A.md\",\"B.md\""
+  },
+  "steps": [
+    {
+      "op": "toggleFavourite",
+      "path": "C.md",
+      "expected": {
+        "status": 500
+      }
+    },
+    {
+      "op": "storedRaw",
+      "expected": "{\"homePath\":\"Home.md\",\"favourites\":[\"A.md\",\"B.md\""
+    }
+  ],
+  "differs": {
+    "folder": {
+      "why": "On the phone nobody can repair app storage, so the corrupt state is kept aside and the write starts again from empty",
+      "steps": [
+        {
+          "op": "toggleFavourite",
+          "path": "C.md",
+          "expected": {
+            "homePath": null,
+            "favourites": [
+              "C.md"
+            ]
+          }
+        },
+        {
+          "op": "corruptBackup",
+          "expected": "{\"homePath\":\"Home.md\",\"favourites\":[\"A.md\",\"B.md\""
+        },
+        {
+          "op": "stored",
+          "expected": {
+            "homePath": null,
+            "favourites": [
+              "C.md"
+            ]
+          }
+        },
+        {
+          "op": "setHome",
+          "path": "Home.md",
+          "expected": {
+            "homePath": "Home.md",
+            "favourites": [
+              "C.md"
+            ]
+          }
+        },
+        {
+          "op": "corruptBackup",
+          "expected": "{\"homePath\":\"Home.md\",\"favourites\":[\"A.md\",\"B.md\""
+        }
+      ]
+    }
+  }
+}

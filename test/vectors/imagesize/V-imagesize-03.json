@@ -1,0 +1,44 @@
+[
+  {
+    "id": "V-imagesize-03a",
+    "name": "WebP lossy (VP8): 14-bit sizes, the scale bits above them ignored",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "52 49 46 46 fe 03 00 00 57 45 42 50 56 50 38 20 0a 00 00 00 50 2a 00 9d 01 2a 90 41 2c 81"
+      ]
+    },
+    "expected": {
+      "width": 400,
+      "height": 300
+    }
+  },
+  {
+    "id": "V-imagesize-03b",
+    "name": "WebP lossless (VP8L): width-1 and height-1 in 14 bits each",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "52 49 46 46 f9 03 00 00 57 45 42 50 56 50 38 4c 05 00 00 00 2f e7 43 bb 10"
+      ]
+    },
+    "expected": {
+      "width": 1000,
+      "height": 750
+    }
+  },
+  {
+    "id": "V-imagesize-03c",
+    "name": "WebP extended (VP8X): the canvas size, 24 bits each",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "52 49 46 46 fe 03 00 00 57 45 42 50 56 50 38 58 0a 00 00 00 10 00 00 00 9f 0f 00 b7 0b 00"
+      ]
+    },
+    "expected": {
+      "width": 4000,
+      "height": 3000
+    }
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "id": "V-imagesize-05a",
+    "name": "JPEG with EXIF orientation 6 (big-endian): the fixture, stored 64x32, shown 32x64",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/rotated.jpg"
+    },
+    "expected": {
+      "width": 32,
+      "height": 64
+    }
+  },
+  {
+    "id": "V-imagesize-05b",
+    "name": "EXIF orientation 8, little-endian, after another tag: width and height swapped",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e1 00 2e 45 78 69 66 00 00 49 49 2a 00 08 00 00 00 02 00 0f 01 02 00 01 00 00 00 00 00 00 00 12 01 03 00 01 00 00 00 08 00 00 00 00 00 00 00 ff c0 00 11 08 00 32 00 64 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 50,
+      "height": 100
+    }
+  },
+  {
+    "id": "V-imagesize-05c",
+    "name": "EXIF orientation 3 (upside down): no swap",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e1 00 22 45 78 69 66 00 00 4d 4d 00 2a 00 00 00 08 00 01 01 12 00 03 00 00 00 01 00 03 00 00 00 00 00 00 ff c0 00 11 08 00 32 00 64 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 100,
+      "height": 50
+    }
+  },
+  {
+    "id": "V-imagesize-05d",
+    "name": "EXIF orientation 5 (transpose): swapped",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e1 00 22 45 78 69 66 00 00 4d 4d 00 2a 00 00 00 08 00 01 01 12 00 03 00 00 00 01 00 05 00 00 00 00 00 00 ff c0 00 11 08 00 32 00 64 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 50,
+      "height": 100
+    }
+  },
+  {
+    "id": "V-imagesize-05e",
+    "name": "an orientation tag that is not a SHORT is ignored",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e1 00 22 45 78 69 66 00 00 4d 4d 00 2a 00 00 00 08 00 01 01 12 00 04 00 00 00 01 00 06 00 00 00 00 00 00 ff c0 00 11 08 00 32 00 64 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": {
+      "width": 100,
+      "height": 50
+    }
+  }
+]

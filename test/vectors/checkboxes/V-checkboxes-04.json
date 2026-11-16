@@ -1,0 +1,21 @@
+{
+  "id": "V-checkboxes-04",
+  "name": "line numbers count frontmatter lines",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "---\ntags: [x]\n---\n# T\n- [ ] task"
+  },
+  "expected": [
+    {
+      "type": "markdown",
+      "content": "---\ntags: [x]\n---\n# T"
+    },
+    {
+      "type": "checkbox",
+      "line": 5,
+      "checked": false,
+      "indent": 0,
+      "text": "task"
+    }
+  ]
+}

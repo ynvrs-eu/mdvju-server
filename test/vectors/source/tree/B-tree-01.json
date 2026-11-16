@@ -1,0 +1,36 @@
+{
+  "id": "B-tree-01",
+  "name": "a symlinked directory pointing outside the vault can't be listed (fixed)",
+  "vault": {
+    "files": {},
+    "escapeSymlink": true
+  },
+  "steps": [
+    {
+      "op": "tree",
+      "path": "escape",
+      "expected": {
+        "status": 400
+      },
+      "differs": {
+        "folder": {
+          "expected": {
+            "status": 404
+          },
+          "why": "The folder source doesn't follow symlinks at all, so there is no such folder (the backend follows in-vault links and refuses this one)"
+        }
+      }
+    },
+    {
+      "op": "treeMentions",
+      "path": "escape",
+      "text": "secret",
+      "expected": false
+    },
+    {
+      "op": "pathsMention",
+      "text": "secret",
+      "expected": false
+    }
+  ]
+}

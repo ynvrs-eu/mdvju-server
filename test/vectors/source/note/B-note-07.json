@@ -1,0 +1,51 @@
+{
+  "id": "B-note-07",
+  "name": "`baseMatched` says whether the write went onto the caller's version (B-checkbox-19, F1)",
+  "vault": {
+    "files": {
+      "Tasks.md": "- [ ] a\n- [ ] b\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "- [ ] a",
+      "base": "loaded",
+      "expected": {
+        "baseMatched": true,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 2,
+      "checked": true,
+      "expectedLine": "- [ ] b",
+      "base": "stale",
+      "expected": {
+        "baseMatched": false,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 2,
+      "checked": false,
+      "expectedLine": "- [x] b",
+      "expected": {
+        "baseMatched": false,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "note",
+      "path": "Tasks.md",
+      "expected": "- [x] a\n- [ ] b\n"
+    }
+  ]
+}

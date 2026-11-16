@@ -1,0 +1,21 @@
+{
+  "id": "V-checkboxes-14",
+  "name": "a task inside a ~~~ fence is not tappable, and a longer ``` fence only closes on as many backticks",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "~~~\n- [x] in tilde fence\n~~~\n````\n```\n- [ ] still fenced\n````\n- [ ] real"
+  },
+  "expected": [
+    {
+      "type": "markdown",
+      "content": "~~~\n- [x] in tilde fence\n~~~\n````\n```\n- [ ] still fenced\n````"
+    },
+    {
+      "type": "checkbox",
+      "line": 8,
+      "checked": false,
+      "indent": 0,
+      "text": "real"
+    }
+  ]
+}

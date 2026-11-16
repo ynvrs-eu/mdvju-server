@@ -1,0 +1,25 @@
+{
+  "id": "V-checkboxes-09",
+  "name": "consecutive non-task lines stay one markdown piece",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "para line 1\npara line 2\n- [ ] t\nmore\ntext"
+  },
+  "expected": [
+    {
+      "type": "markdown",
+      "content": "para line 1\npara line 2"
+    },
+    {
+      "type": "checkbox",
+      "line": 3,
+      "checked": false,
+      "indent": 0,
+      "text": "t"
+    },
+    {
+      "type": "markdown",
+      "content": "more\ntext"
+    }
+  ]
+}

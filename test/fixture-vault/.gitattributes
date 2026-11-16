@@ -1,0 +1,3 @@
+# Fixture bytes are test data: never let git normalise line endings
+# (Tasks/CRLF Tasks.md must keep its CRLFs) or diff the binaries.
+* -text

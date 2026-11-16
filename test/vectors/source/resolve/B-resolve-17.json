@@ -1,0 +1,30 @@
+{
+  "id": "B-resolve-17",
+  "name": "a Markdown image's target (resolveEmbed with from) resolves relative to its note, then from the vault root, then by the end of its path; a path out of the vault is refused",
+  "vault": {
+    "files": {
+      "Notes/Sub/note.md": "# Note\n",
+      "Notes/Sub/obrazy/picture.jpg": "jpg",
+      "Notes/Sub/my pic.png": "png",
+      "Notes/Sub/diagram.svg": "<svg/>",
+      "Notes/shared/pic.png": "png",
+      "attachments/dup.png": "png",
+      "Notes/Sub/attachments/dup.png": "png",
+      "Elsewhere/deep/far.png": "png",
+      "top.png": "png"
+    }
+  },
+  "steps": [
+    { "op": "resolveEmbed", "link": "obrazy/picture.jpg", "from": "Notes/Sub/note.md", "expected": "Notes/Sub/obrazy/picture.jpg" },
+    { "op": "resolveEmbed", "link": "./obrazy/picture.jpg", "from": "Notes/Sub/note.md", "expected": "Notes/Sub/obrazy/picture.jpg" },
+    { "op": "resolveEmbed", "link": "my pic.png", "from": "Notes/Sub/note.md", "expected": "Notes/Sub/my pic.png" },
+    { "op": "resolveEmbed", "link": "../shared/pic.png", "from": "Notes/Sub/note.md", "expected": "Notes/shared/pic.png" },
+    { "op": "resolveEmbed", "link": "diagram.svg", "from": "Notes/Sub/note.md", "expected": "Notes/Sub/diagram.svg" },
+    { "op": "resolveEmbed", "link": "attachments/dup.png", "from": "Notes/Sub/note.md", "expected": "Notes/Sub/attachments/dup.png" },
+    { "op": "resolveEmbed", "link": "/attachments/dup.png", "from": "Notes/Sub/note.md", "expected": "attachments/dup.png" },
+    { "op": "resolveEmbed", "link": "far.png", "from": "Notes/Sub/note.md", "expected": "Elsewhere/deep/far.png" },
+    { "op": "resolveEmbed", "link": "../../top.png", "from": "Notes/Sub/note.md", "expected": "top.png" },
+    { "op": "resolveEmbed", "link": "../../../top.png", "from": "Notes/Sub/note.md", "expected": null },
+    { "op": "resolveEmbed", "link": "./far.png", "from": "Notes/Sub/note.md", "expected": null }
+  ]
+}

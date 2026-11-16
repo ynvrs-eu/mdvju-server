@@ -1,0 +1,17 @@
+{
+  "id": "B-resolve-01",
+  "name": "`Note#Heading` resolves to the note (fixed)",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "Note#Heading",
+      "expected": "Folder/Note.md"
+    }
+  ]
+}

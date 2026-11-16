@@ -1,0 +1,87 @@
+{
+  "id": "B-note-05",
+  "name": "a checkbox write that doesn't fit the note is a 409, note unchanged (B-checkbox-01, -07, -13)",
+  "vault": {
+    "files": {
+      "Tasks.md": "# T\n- [ ] task\n- [ ]\nplain\n```\n- [ ] in backticks\n```\n~~~\n- [ ] in tildes\n~~~\n- [ ] after\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 1,
+      "checked": true,
+      "expectedLine": "# T",
+      "expected": {
+        "status": 409
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 3,
+      "checked": true,
+      "expectedLine": "- [ ]",
+      "expected": {
+        "status": 409
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 6,
+      "checked": true,
+      "expectedLine": "- [ ] in backticks",
+      "expected": {
+        "status": 409
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 9,
+      "checked": true,
+      "expectedLine": "- [ ] in tildes",
+      "expected": {
+        "status": 409
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 2,
+      "checked": true,
+      "expectedLine": "- [ ] another task",
+      "expected": {
+        "status": 409
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 40,
+      "checked": true,
+      "expectedLine": "- [ ] task",
+      "expected": {
+        "status": 409
+      }
+    },
+    {
+      "op": "note",
+      "path": "Tasks.md",
+      "expected": "# T\n- [ ] task\n- [ ]\nplain\n```\n- [ ] in backticks\n```\n~~~\n- [ ] in tildes\n~~~\n- [ ] after\n"
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 11,
+      "checked": true,
+      "expectedLine": "- [ ] after",
+      "expected": {
+        "baseMatched": false,
+        "etagIsCurrent": true
+      }
+    }
+  ]
+}

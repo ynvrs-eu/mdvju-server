@@ -1,0 +1,17 @@
+{
+  "id": "B-state-08",
+  "name": "a corrupt stored state reads as empty defaults",
+  "vault": {
+    "files": {},
+    "state": "{not json"
+  },
+  "steps": [
+    {
+      "op": "state",
+      "expected": {
+        "homePath": null,
+        "favourites": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "B-resolve-08",
+  "name": "a basename wikilink resolves to its vault-relative path",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Notes/Hello.md": "# Hello\n\nworld"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "Note",
+      "expected": "Folder/Note.md"
+    },
+    {
+      "op": "resolve",
+      "link": "Hello",
+      "expected": "Notes/Hello.md"
+    }
+  ]
+}

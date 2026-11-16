@@ -1,0 +1,31 @@
+{
+  "id": "B-state-06",
+  "name": "setting home stores it",
+  "vault": {
+    "files": {}
+  },
+  "steps": [
+    {
+      "op": "setHome",
+      "path": "Notes/Home.md",
+      "expected": {
+        "homePath": "Notes/Home.md",
+        "favourites": []
+      }
+    },
+    {
+      "op": "stored",
+      "expected": {
+        "homePath": "Notes/Home.md",
+        "favourites": []
+      }
+    },
+    {
+      "op": "state",
+      "expected": {
+        "homePath": "Notes/Home.md",
+        "favourites": []
+      }
+    }
+  ]
+}

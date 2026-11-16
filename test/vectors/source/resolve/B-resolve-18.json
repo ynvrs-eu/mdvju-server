@@ -1,0 +1,27 @@
+{
+  "id": "B-resolve-18",
+  "name": "a note embed's target (`![[Note]]`, `![[Note#Heading]]`, `![[Note#^block]]`) resolves to the note by the wikilink rules: name without .md, shortest path, frontmatter aliases; a file with the exact name still wins; a target with an attachment extension never falls back to a note",
+  "vault": {
+    "files": {
+      "Notes/Other note.md": "# Other note\n\n## Heading\n\nText ^block1\n",
+      "Notes/Deep/Other note.md": "# A deeper one\n",
+      "Recipes/Pork.md": "---\naliases: [Marinade]\n---\n# Pork\n",
+      "Attachments/Diagram.png": "png",
+      "Diagram.md": "# Diagram\n",
+      "Notes/Aliased.md": "---\naliases: [lost.png]\n---\nText\n"
+    }
+  },
+  "readNotes": true,
+  "steps": [
+    { "op": "resolveEmbed", "link": "Other note", "expected": "Notes/Other note.md" },
+    { "op": "resolveEmbed", "link": "Other note#Heading", "expected": "Notes/Other note.md" },
+    { "op": "resolveEmbed", "link": "Other note#^block1", "expected": "Notes/Other note.md" },
+    { "op": "resolveEmbed", "link": "Other note.md", "expected": "Notes/Other note.md" },
+    { "op": "resolveEmbed", "link": "Notes/Deep/Other note", "expected": "Notes/Deep/Other note.md" },
+    { "op": "resolveEmbed", "link": "Marinade", "expected": "Recipes/Pork.md" },
+    { "op": "resolveEmbed", "link": "Diagram.png", "expected": "Attachments/Diagram.png" },
+    { "op": "resolveEmbed", "link": "Diagram", "expected": "Diagram.md" },
+    { "op": "resolveEmbed", "link": "Nowhere", "expected": null },
+    { "op": "resolveEmbed", "link": "lost.png", "expected": null }
+  ]
+}

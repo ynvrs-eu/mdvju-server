@@ -1,0 +1,21 @@
+{
+  "id": "V-checkboxes-10",
+  "name": "a task inside a ``` fence is not tappable",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "```\n- [ ] in fence\n```\n- [ ] real"
+  },
+  "expected": [
+    {
+      "type": "markdown",
+      "content": "```\n- [ ] in fence\n```"
+    },
+    {
+      "type": "checkbox",
+      "line": 4,
+      "checked": false,
+      "indent": 0,
+      "text": "real"
+    }
+  ]
+}

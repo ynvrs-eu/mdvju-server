@@ -1,0 +1,24 @@
+{
+  "id": "B-resolve-10",
+  "name": "an attachment embed resolves to its vault-relative path",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Media/pic.png": "x",
+      "_attachments/mobility-cat-cow.gif": "fake gif"
+    }
+  },
+  "steps": [
+    {
+      "op": "resolveEmbed",
+      "link": "pic.png",
+      "expected": "Media/pic.png"
+    },
+    {
+      "op": "resolveEmbed",
+      "link": "mobility-cat-cow.gif",
+      "expected": "_attachments/mobility-cat-cow.gif"
+    }
+  ]
+}

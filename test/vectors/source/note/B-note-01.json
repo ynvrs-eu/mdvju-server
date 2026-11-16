@@ -1,0 +1,39 @@
+{
+  "id": "B-note-01",
+  "name": "a note reads as its raw text: frontmatter, comments, CRLF and an empty note as they are on disk",
+  "vault": {
+    "files": {
+      "Plain.md": "---\ntags: [a]\n---\n# Title\n<!-- hidden -->\n",
+      "CRLF.md": "# A\r\n\r\n- [ ] x\r\n",
+      "Empty.md": "",
+      "Sub/Deep.md": "deep\n"
+    }
+  },
+  "steps": [
+    {
+      "op": "note",
+      "path": "Plain.md",
+      "expected": "---\ntags: [a]\n---\n# Title\n<!-- hidden -->\n"
+    },
+    {
+      "op": "note",
+      "path": "CRLF.md",
+      "expected": "# A\r\n\r\n- [ ] x\r\n"
+    },
+    {
+      "op": "note",
+      "path": "Empty.md",
+      "expected": ""
+    },
+    {
+      "op": "note",
+      "path": "Sub/Deep.md",
+      "expected": "deep\n"
+    },
+    {
+      "op": "note",
+      "path": "/Sub/Deep.md",
+      "expected": "deep\n"
+    }
+  ]
+}

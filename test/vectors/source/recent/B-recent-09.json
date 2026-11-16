@@ -1,0 +1,34 @@
+{
+  "id": "B-recent-09",
+  "name": "empty and frontmatter-only notes are left out, even when most recently modified",
+  "vault": {
+    "files": {
+      "Notes/Oldest.md": "Oldest.md",
+      "Notes/Middle.md": "Middle.md",
+      "Notes/Newest.md": "Newest.md",
+      "Notes/Empty.md": "",
+      "Notes/FrontmatterOnly.md": "---\nstatus: active\n---\n"
+    },
+    "mtimes": {
+      "Notes/Oldest.md": "2026-09-01T12:00:00.000Z",
+      "Notes/Middle.md": "2026-09-01T12:00:01.000Z",
+      "Notes/Newest.md": "2026-09-01T12:00:02.000Z",
+      "Notes/Empty.md": "2026-09-01T12:16:40.000Z",
+      "Notes/FrontmatterOnly.md": "2026-09-01T12:16:40.000Z"
+    }
+  },
+  "readNotes": true,
+  "steps": [
+    {
+      "op": "recent",
+      "expected": {
+        "paths": [
+          "Notes/Newest.md",
+          "Notes/Middle.md",
+          "Notes/Oldest.md"
+        ],
+        "nextCursor": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "V-imagesize-07a",
+    "name": "PNG cut inside IHDR",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/image.png",
+      "truncate": 20
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-07b",
+    "name": "GIF cut before the screen height",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/anim.gif",
+      "truncate": 8
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-07c",
+    "name": "JPEG cut before its SOF",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/rotated.jpg",
+      "truncate": 107
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-07d",
+    "name": "JPEG cut inside its SOF",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/rotated.jpg",
+      "truncate": 115
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-07e",
+    "name": "JPEG cut just after its SOF sizes: still read",
+    "input": {
+      "op": "imageSize",
+      "fixture": "Attachments/rotated.jpg",
+      "truncate": 116
+    },
+    "expected": {
+      "width": 32,
+      "height": 64
+    }
+  },
+  {
+    "id": "V-imagesize-07f",
+    "name": "WebP VP8 cut inside the sizes",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "52 49 46 46 fe 03 00 00 57 45 42 50 56 50 38 20 0a 00 00 00 50 2a 00 9d 01 2a 90 01"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-07g",
+    "name": "JPEG that reaches its scan (SOS) with no SOF",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff da 00 08 01 01 00 00 3f 00"
+      ]
+    },
+    "expected": null
+  }
+]

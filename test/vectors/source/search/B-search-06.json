@@ -1,0 +1,18 @@
+{
+  "id": "B-search-06",
+  "name": "nothing for a query under 2 characters",
+  "vault": {
+    "files": {
+      "Notes/Hello World.md": "hi",
+      "Notes/Other.md": "other",
+      "Diary/2026-09-18.md": "diary"
+    }
+  },
+  "steps": [
+    {
+      "op": "search",
+      "q": "h",
+      "expected": []
+    }
+  ]
+}

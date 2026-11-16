@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.log
+.env
+.DS_Store
+
+# The device registry and server secret (src/devices.ts)
+secrets/

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "V-checkboxes-06a",
+    "name": "toggle on: only the target line's state changes; sp marker kept (marker-normalised view; the real byte-for-byte check is B-checkbox-06)",
+    "input": {
+      "op": "checkboxToggle",
+      "raw": "# T\n- [ ] a\n- [ ] b <!-- sp:4f9c2a1e -->\n  - [x] c\n",
+      "line": 3,
+      "checked": true
+    },
+    "expected": "# T\n- [ ] a\n- [x] b <!-- sp:4f9c2a1e -->\n  - [x] c\n"
+  },
+  {
+    "id": "V-checkboxes-06b",
+    "name": "toggle off an indented task",
+    "input": {
+      "op": "checkboxToggle",
+      "raw": "# T\n- [ ] a\n- [ ] b <!-- sp:4f9c2a1e -->\n  - [x] c\n",
+      "line": 4,
+      "checked": false
+    },
+    "expected": "# T\n- [ ] a\n- [ ] b <!-- sp:4f9c2a1e -->\n  - [ ] c\n"
+  }
+]

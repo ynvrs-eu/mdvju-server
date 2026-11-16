@@ -1,0 +1,21 @@
+{
+  "id": "V-checkboxes-05",
+  "name": "not checkboxes: bare '- [ ]', '* [ ] a', '1. [ ] a', '+ [ ] a', '- [ ]x'; '- [ ] ' with a trailing space is one",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "- [ ]\n* [ ] a\n1. [ ] a\n+ [ ] a\n- [ ]no space\n- [ ] "
+  },
+  "expected": [
+    {
+      "type": "markdown",
+      "content": "- [ ]\n* [ ] a\n1. [ ] a\n+ [ ] a\n- [ ]no space"
+    },
+    {
+      "type": "checkbox",
+      "line": 6,
+      "checked": false,
+      "indent": 0,
+      "text": ""
+    }
+  ]
+}

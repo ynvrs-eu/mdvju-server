@@ -1,0 +1,73 @@
+{
+  "id": "B-note-04",
+  "name": "a checkbox write changes only the state character, byte for byte (B-checkbox-04, -06)",
+  "vault": {
+    "files": {
+      "Tasks.md": "# Tasks\n\n- [ ] first <!-- sp:abc -->\n  - [x] nested\n- [ ] last\n",
+      "CRLF.md": "# A\r\n- [ ] one\r\n- [ ] two"
+    }
+  },
+  "steps": [
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 3,
+      "checked": true,
+      "expectedLine": "- [ ] first <!-- sp:abc -->",
+      "base": "loaded",
+      "expected": {
+        "baseMatched": true,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "note",
+      "path": "Tasks.md",
+      "expected": "# Tasks\n\n- [x] first <!-- sp:abc -->\n  - [x] nested\n- [ ] last\n"
+    },
+    {
+      "op": "checkbox",
+      "path": "Tasks.md",
+      "line": 4,
+      "checked": false,
+      "expectedLine": "  - [x] nested",
+      "base": "loaded",
+      "expected": {
+        "baseMatched": true,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "note",
+      "path": "Tasks.md",
+      "expected": "# Tasks\n\n- [x] first <!-- sp:abc -->\n  - [ ] nested\n- [ ] last\n"
+    },
+    {
+      "op": "checkbox",
+      "path": "CRLF.md",
+      "line": 2,
+      "checked": true,
+      "expectedLine": "- [ ] one\r",
+      "expected": {
+        "baseMatched": false,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "checkbox",
+      "path": "CRLF.md",
+      "line": 3,
+      "checked": true,
+      "expectedLine": "- [ ] two",
+      "expected": {
+        "baseMatched": false,
+        "etagIsCurrent": true
+      }
+    },
+    {
+      "op": "note",
+      "path": "CRLF.md",
+      "expected": "# A\r\n- [x] one\r\n- [x] two"
+    }
+  ]
+}

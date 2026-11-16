@@ -1,0 +1,45 @@
+{
+  "id": "B-recent-05",
+  "name": "at most 15 a page, with the last item's `<mtimeMs>|<path>` as nextCursor",
+  "vault": {
+    "files": {
+      "Notes/Oldest.md": "Oldest.md",
+      "Notes/Middle.md": "Middle.md",
+      "Notes/Newest.md": "Newest.md",
+      "Notes/Extra0.md": "x",
+      "Notes/Extra1.md": "x",
+      "Notes/Extra2.md": "x",
+      "Notes/Extra3.md": "x",
+      "Notes/Extra4.md": "x",
+      "Notes/Extra5.md": "x",
+      "Notes/Extra6.md": "x",
+      "Notes/Extra7.md": "x",
+      "Notes/Extra8.md": "x",
+      "Notes/Extra9.md": "x",
+      "Notes/Extra10.md": "x",
+      "Notes/Extra11.md": "x",
+      "Notes/Extra12.md": "x",
+      "Notes/Extra13.md": "x",
+      "Notes/Extra14.md": "x",
+      "Notes/Extra15.md": "x",
+      "Notes/Extra16.md": "x",
+      "Notes/Extra17.md": "x",
+      "Notes/Extra18.md": "x",
+      "Notes/Extra19.md": "x"
+    },
+    "mtimes": {
+      "Notes/Oldest.md": "2026-09-01T12:00:00.000Z",
+      "Notes/Middle.md": "2026-09-01T12:00:01.000Z",
+      "Notes/Newest.md": "2026-09-01T12:00:02.000Z"
+    }
+  },
+  "steps": [
+    {
+      "op": "recentFirstPage",
+      "expected": {
+        "size": 15,
+        "cursorIsLastItem": true
+      }
+    }
+  ]
+}

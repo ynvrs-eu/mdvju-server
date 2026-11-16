@@ -1,0 +1,19 @@
+{
+  "id": "B-resolve-05",
+  "name": "a first line of `----` isn't frontmatter, so its aliases are ignored (fixed)",
+  "vault": {
+    "files": {
+      "Folder/Note.md": "# Note\n\n## Heading\n\nPara ^block\n",
+      "Other.md": "# Other\n",
+      "Dashes.md": "----\naliases: [ghost]\n---\nbody\n"
+    }
+  },
+  "readNotes": true,
+  "steps": [
+    {
+      "op": "resolve",
+      "link": "ghost",
+      "expected": null
+    }
+  ]
+}

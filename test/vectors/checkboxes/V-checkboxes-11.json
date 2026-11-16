@@ -1,0 +1,14 @@
+{
+  "id": "V-checkboxes-11",
+  "name": "an ad-todo fence containing tasks stays one intact fence",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "```ad-todo\ntitle: Todo\n- [ ] one\n- [x] two\n```"
+  },
+  "expected": [
+    {
+      "type": "markdown",
+      "content": "```ad-todo\ntitle: Todo\n- [ ] one\n- [x] two\n```"
+    }
+  ]
+}

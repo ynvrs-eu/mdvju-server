@@ -1,0 +1,110 @@
+[
+  {
+    "id": "V-imagesize-08a",
+    "name": "empty input",
+    "input": {
+      "op": "imageSize",
+      "bytes": []
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08b",
+    "name": "text",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "68 65 6c 6c 6f 2c 20 6e 6f 74 20 61 6e 20 69 6d 61 67 65"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08c",
+    "name": "SVG (sized by the renderer, not here)",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "3c 73 76 67 20 78 6d 6c 6e 73 3d 22 68 74 74 70 3a 2f 2f 77 77 77 2e 77 33 2e 6f 72 67 2f 32 30 30 30 2f 73 76 67 22 20 77 69 64 74 68 3d 22 31 30 22 20 68 65 69 67 68 74 3d 22 31 30 22 2f 3e"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08d",
+    "name": "BMP (not served)",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "42 4d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0a 00 00 00 0a 00 00 00"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08e",
+    "name": "RIFF that is not WebP (WAVE)",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "52 49 46 46 64 00 00 00 57 41 56 45 66 6d 74 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08f",
+    "name": "PNG signature without IHDR first",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 74 45 58 74 00 00 00 0a 00 00 00 0a 08 06 00 00 00 8d 32 cf bd"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08g",
+    "name": "PNG with a zero width",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 00 00 00 00 00 0a 08 06 00 00 00 9a 10 5f 74"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08h",
+    "name": "JPEG with a zero height (set later by DNL)",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff c0 00 11 08 00 00 02 80 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08i",
+    "name": "JPEG SOI followed by a byte that is not a marker",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 00 10 4a 46 49 46"
+      ]
+    },
+    "expected": null
+  },
+  {
+    "id": "V-imagesize-08j",
+    "name": "a segment length below 2",
+    "input": {
+      "op": "imageSize",
+      "bytes": [
+        "ff d8 ff e0 00 01 ff c0 00 11 08 01 e0 02 80 03 01 22 00 02 11 01 03 11 01"
+      ]
+    },
+    "expected": null
+  }
+]

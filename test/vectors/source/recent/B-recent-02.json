@@ -1,0 +1,19 @@
+{
+  "id": "B-recent-02",
+  "name": "a note that is only frontmatter plus an HTML comment is not listed (fixed: shared/frontmatter.ts)",
+  "vault": {
+    "files": {
+      "Empty-ish.md": "---\ntitle: nothing\n---\n<!-- sp:0000-uuid -->\n",
+      "Real.md": "# Real\n"
+    }
+  },
+  "readNotes": true,
+  "steps": [
+    {
+      "op": "recentPages",
+      "expected": [
+        "Real.md"
+      ]
+    }
+  ]
+}

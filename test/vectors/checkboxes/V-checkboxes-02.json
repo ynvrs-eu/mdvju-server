@@ -1,0 +1,17 @@
+{
+  "id": "V-checkboxes-02",
+  "name": "capital X counts as checked",
+  "input": {
+    "op": "checkboxPieces",
+    "raw": "- [X] capital"
+  },
+  "expected": [
+    {
+      "type": "checkbox",
+      "line": 1,
+      "checked": true,
+      "indent": 0,
+      "text": "capital"
+    }
+  ]
+}

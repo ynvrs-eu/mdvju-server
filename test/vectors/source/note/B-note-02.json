@@ -1,0 +1,56 @@
+{
+  "id": "B-note-02",
+  "name": "a refused path is a 400 and a missing note a 404 (fixed); so is a note through a symlink out of the vault",
+  "vault": {
+    "files": {
+      ".obsidian/app.md": "# hidden\n",
+      "pic.txt": "text\n",
+      "Note.md": "# Note\n"
+    },
+    "escapeSymlink": true
+  },
+  "steps": [
+    {
+      "op": "note",
+      "path": ".obsidian/app.md",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "note",
+      "path": "pic.txt",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "note",
+      "path": "../outside.md",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "note",
+      "path": "escape/secret.md",
+      "expected": {
+        "status": 400
+      }
+    },
+    {
+      "op": "note",
+      "path": "Missing.md",
+      "expected": {
+        "status": 404
+      }
+    },
+    {
+      "op": "note",
+      "path": "Folder/Missing.md",
+      "expected": {
+        "status": 404
+      }
+    }
+  ]
+}

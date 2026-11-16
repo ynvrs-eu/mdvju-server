@@ -1,0 +1,34 @@
+[
+  {
+    "id": "V-checkboxes-13a",
+    "name": "CRLF note: raw line numbers count \\n, so the unterminated final task line is tappable as raw line 3",
+    "input": {
+      "op": "checkboxPieces",
+      "raw": "intro\r\n\r\n- [ ] b"
+    },
+    "expected": [
+      {
+        "type": "markdown",
+        "content": "intro\r\n\r"
+      },
+      {
+        "type": "checkbox",
+        "line": 3,
+        "checked": false,
+        "indent": 0,
+        "text": "b"
+      }
+    ]
+  },
+  {
+    "id": "V-checkboxes-13b",
+    "name": "CRLF note: toggling the final task keeps every other CRLF byte",
+    "input": {
+      "op": "checkboxToggle",
+      "raw": "intro\r\n\r\n- [ ] b",
+      "line": 3,
+      "checked": true
+    },
+    "expected": "intro\r\n\r\n- [x] b"
+  }
+]

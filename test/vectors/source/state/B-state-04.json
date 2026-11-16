@@ -1,0 +1,50 @@
+{
+  "id": "B-state-04",
+  "name": "toggling A then B persists both",
+  "vault": {
+    "files": {}
+  },
+  "steps": [
+    {
+      "op": "toggleFavourite",
+      "path": "A.md",
+      "expected": {
+        "homePath": null,
+        "favourites": [
+          "A.md"
+        ]
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": "B.md",
+      "expected": {
+        "homePath": null,
+        "favourites": [
+          "A.md",
+          "B.md"
+        ]
+      }
+    },
+    {
+      "op": "stored",
+      "expected": {
+        "homePath": null,
+        "favourites": [
+          "A.md",
+          "B.md"
+        ]
+      }
+    },
+    {
+      "op": "state",
+      "expected": {
+        "homePath": null,
+        "favourites": [
+          "A.md",
+          "B.md"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "B-state-07",
+  "name": "a favourite toggles on and back off, keeping home intact",
+  "vault": {
+    "files": {}
+  },
+  "steps": [
+    {
+      "op": "setHome",
+      "path": "Home.md",
+      "expected": {
+        "homePath": "Home.md",
+        "favourites": []
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": "A.md",
+      "expected": {
+        "homePath": "Home.md",
+        "favourites": [
+          "A.md"
+        ]
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": "B.md",
+      "expected": {
+        "homePath": "Home.md",
+        "favourites": [
+          "A.md",
+          "B.md"
+        ]
+      }
+    },
+    {
+      "op": "toggleFavourite",
+      "path": "A.md",
+      "expected": {
+        "homePath": "Home.md",
+        "favourites": [
+          "B.md"
+        ]
+      }
+    }
+  ]
+}

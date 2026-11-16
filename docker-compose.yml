@@ -1,0 +1,76 @@
+services:
+  server:
+    build: .
+    restart: unless-stopped
+    # Only the address the app or the reverse proxy reaches, never every
+    # interface. BIND_ADDRESS in .env; default 127.0.0.1 (a proxy on the
+    # same host).
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:3099:3099"
+    # An init as PID 1 passes SIGTERM on and reaps children; the server
+    # also exits on SIGTERM itself, for a plain `docker run`.
+    init: true
+    # Nothing in the image is written at run time: only the two mounts
+    # below. /tmp as a small tmpfs in case a library wants one.
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    security_opt:
+      - no-new-privileges:true
+    # Needs no capability: a port above 1024, files owned by its own uid
+    # and group.
+    cap_drop:
+      - ALL
+    # A vault of 15k files takes about 45 MB and near 0 CPU when idle.
+    # Generous headroom for an index rebuild or a big video range request.
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    environment:
+      VAULT_ROOT: /vault
+      # The shared token: optional once a device is paired. While it's set,
+      # it works next to the paired devices' tokens. Remove it from .env
+      # (and `docker compose up -d`) to allow paired devices only.
+      AUTH_TOKEN: ${AUTH_TOKEN:-}
+      SECRETS_DIR: /secrets
+      # The server's URL as the app reaches it, put into pairing links.
+      PUBLIC_URL: ${PUBLIC_URL:-}
+      # Express "trust proxy", so the /pair rate limit counts the client's
+      # IP behind the reverse proxy rather than the proxy's.
+      TRUST_PROXY: ${TRUST_PROXY:-}
+      # Only for a browser client: the one origin allowed to call the API.
+      # Unset: no CORS headers (the iOS app needs none).
+      CORS_ORIGIN: ${CORS_ORIGIN:-}
+      # A public demo server only: a reusable pairing code until an ISO
+      # date, at most DEMO_MAX_DEVICES (default 20) demo devices. Off
+      # unless both of the first two are set.
+      DEMO_PAIRING_CODE: ${DEMO_PAIRING_CODE:-}
+      DEMO_PAIRING_EXPIRES: ${DEMO_PAIRING_EXPIRES:-}
+      DEMO_MAX_DEVICES: ${DEMO_MAX_DEVICES:-}
+    volumes:
+      # The device registry and server secret (src/devices.ts). The
+      # folder, not devices.json itself: the scripts and the server replace
+      # the file by renaming a new one over it, and a single-file bind
+      # mount would keep showing the old inode. The folder and its files
+      # belong to the image's user only (uid/gid 1001, 0700/0600): a host
+      # group with write access could add its own device. Create it with
+      # `sudo install -d -m 700 -o 1001 -g 1001 secrets`. The scripts reach
+      # it through `docker compose run` of this service.
+      - ./secrets:/secrets
+      # The vault. Writable: checkbox ticks and home/favourites
+      # (.mdvju/state.json) are written here. Add `read_only: true` below
+      # for a server that only reads; those writes then fail with a 500.
+      # rslave propagation: if the vault folder is itself a mount on the
+      # host (NFS, SMB) that gets remounted while the container runs, the
+      # container follows the new mount instead of seeing the empty
+      # folder underneath.
+      - type: bind
+        source: ${VAULT_HOST_PATH:?set VAULT_HOST_PATH in .env}
+        target: /vault
+        bind:
+          propagation: rslave
+    # The healthcheck is the image's (Dockerfile HEALTHCHECK, GET /health):
+    # the server answers and /vault has entries. Docker doesn't restart an
+    # unhealthy container by itself (`restart: unless-stopped` only fires
+    # when the process exits); scripts/restart-if-unhealthy.sh, run from
+    # cron, does.

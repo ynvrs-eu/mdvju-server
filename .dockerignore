@@ -1,0 +1,9 @@
+# The image needs only the package files, src/ and shared/.
+*
+!package.json
+!package-lock.json
+!tsconfig.json
+!src
+!shared
+src/**/*.test.ts
+src/test-support.ts

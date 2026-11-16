@@ -1,0 +1,27 @@
+[
+  {
+    "id": "V-checkboxes-15a",
+    "name": "tab-indented text under a task is the task's continuation, not a code block",
+    "input": {
+      "op": "checkboxPieces",
+      "raw": "- [ ] task\n\tnote text\n\t- sub point\nafter"
+    },
+    "expected": [
+      { "type": "checkbox", "line": 1, "checked": false, "indent": 0, "text": "task" },
+      { "type": "markdown", "content": "note text\n- sub point\nafter" }
+    ]
+  },
+  {
+    "id": "V-checkboxes-15b",
+    "name": "under a nested task, the continuation loses the task's indent plus one level",
+    "input": {
+      "op": "checkboxPieces",
+      "raw": "- [ ] parent\n\t- [ ] child\n\t\tchild note\n\t\t\t- deeper\n    four-space note under parent"
+    },
+    "expected": [
+      { "type": "checkbox", "line": 1, "checked": false, "indent": 0, "text": "parent" },
+      { "type": "checkbox", "line": 2, "checked": false, "indent": 1, "text": "child" },
+      { "type": "markdown", "content": "child note\n\t- deeper\nfour-space note under parent" }
+    ]
+  }
+]
