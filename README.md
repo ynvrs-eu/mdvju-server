@@ -64,6 +64,10 @@ npm run build         # into dist/
 
 To run it from source: `VAULT_ROOT=/path/to/vault SECRETS_DIR=./secrets PUBLIC_URL=http://localhost:3000 npm run dev` (port 3000 unless `PORT` is set).
 
+## How it's made
+
+mdvju is written with AI assistance: much of the code is drafted by AI coding agents. Nothing goes in unread. Every change is checked by the test suite, reviewed, and read by a human (the maintainer) before it is merged or released, and the maintainer is responsible for all of it. Security fixes get the same review plus tests for each case they cover.
+
 ## Links
 
 - [mdvju](https://mdvju.app): the app
