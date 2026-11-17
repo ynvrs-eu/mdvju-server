@@ -1,6 +1,12 @@
 services:
   server:
-    build: .
+    # The released image, multi-arch (amd64, arm64). The tag 1 follows
+    # every 1.x release; pin an exact version (e.g. 1.0.0) to update only
+    # when you choose to. See docs/upgrade.md.
+    image: ghcr.io/ynvrs-eu/mdvju-server:1
+    # To build from this checkout instead, comment out `image:` above,
+    # uncomment `build:`, and run `docker compose up -d --build`.
+    # build: .
     restart: unless-stopped
     # Only the address the app or the reverse proxy reaches, never every
     # interface. BIND_ADDRESS in .env; default 127.0.0.1 (a proxy on the
