@@ -18,7 +18,7 @@ COPY --from=build /app/dist ./dist
 # A fixed uid/gid (1001), so the files the server writes (ticked
 # checkboxes, home and favourites, the device registry) have a known
 # owner on the host. The vault folder must be writable for this uid or
-# group; see the README.
+# group; see docs/install.md.
 RUN addgroup -g 1001 app && adduser -S app -G app -u 1001
 USER app
 

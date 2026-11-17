@@ -1,0 +1,62 @@
+name: Bug report
+description: Something in the server doesn't work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Never paste a device token, pairing link or code, `.env`, or anything from `secrets/`.** Security problems go to security@mdvju.app, not here (see SECURITY.md).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Steps, a request, or a small vault layout that shows the problem, if you have one.
+  - type: input
+    id: server-version
+    attributes:
+      label: Server version
+      description: The image tag or commit. `docker inspect --format '{{index .Config.Labels "org.opencontainers.image.version"}}' $(docker compose ps -q server)` prints it.
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: how-run
+    attributes:
+      label: How you run it
+      options:
+        - docker compose, the published image
+        - docker compose, built from the checkout
+        - From source (npm)
+        - Something else (say below)
+    validations:
+      required: true
+  - type: input
+    id: proxy
+    attributes:
+      label: Reverse proxy and HTTPS
+      description: For example "tailscale serve", "Caddy on the host with Let's Encrypt", "nginx in Docker". And your TRUST_PROXY value.
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Host and vault
+      description: OS and CPU (amd64, arm64), and where the vault lives (local disk, NFS, SMB) and what syncs it.
+  - type: input
+    id: app-version
+    attributes:
+      label: mdvju app version
+      description: If the problem shows in the app. The iPhone's Settings › General › iPhone Storage › mdvju shows it.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Server log
+      description: The lines around the problem, from `docker compose logs --tail 100 server`. Remove anything private (note names you'd rather not share, addresses) and any token or pairing link.
+      render: text

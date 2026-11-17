@@ -25,82 +25,25 @@ You don't need it. mdvju reads a folder in iCloud Drive or On My iPhone on its o
 ## What you need
 
 - A machine that's always on and can read your vault folder (a NAS, a home server, or a small rented server), with **Docker** and docker compose. That's the supported way to run it.
-- An **HTTPS** address for it that your phone can reach. mdvju connects only over HTTPS, also on your home network or Tailscale. Put the server behind a reverse proxy (Caddy, nginx or Traefik); Tailscale's HTTPS certificates work too.
+- An **HTTPS** address for it that your phone can reach. mdvju connects only over HTTPS, also on your home network or Tailscale. Put the server behind a reverse proxy (Caddy, nginx or Traefik), or use Tailscale's HTTPS certificates.
 - mdvju on your iPhone, during the free trial or bought. The server itself costs nothing.
 
-## Quick start
+## Install
+
+[docs/install.md](docs/install.md) goes through it step by step: the vault's permissions, HTTPS with Tailscale or with Caddy and your own domain, pairing, backups and troubleshooting. In short:
 
 ```bash
 git clone https://github.com/ynvrs-eu/mdvju-server.git
 cd mdvju-server
-cp .env.example .env        # set VAULT_HOST_PATH and PUBLIC_URL
-sudo install -d -m 700 -o 1001 -g 1001 secrets   # the device registry: the container's user only
-docker compose build
-scripts/pair-device.sh "My iPhone"   # creates secrets/devices.json and prints a pairing link
+cp .env.example .env        # set VAULT_HOST_PATH and PUBLIC_URL (https://...)
+sudo install -d -m 700 -o 1001 -g 1001 secrets
+scripts/pair-device.sh "My iPhone"   # prints a pairing link and its QR code
 docker compose up -d
 ```
 
-- `VAULT_HOST_PATH` is your vault's folder on this machine. The container runs as uid/gid 1001 and must be able to read it, and to write it for ticks and home and favourites (for example: the vault's group is 1001 and group-writable). Without write access everything else still works; those writes fail.
-- `PUBLIC_URL` is the HTTPS address your phone reaches the server at, e.g. `https://notes.example.com`. It goes into the pairing links. The server refuses to start without it.
-- The server listens on `127.0.0.1:3099`. Set `BIND_ADDRESS` in `.env` if your proxy runs on another machine; never `0.0.0.0` on a host with a public address.
+`docker compose` runs the published image, `ghcr.io/ynvrs-eu/mdvju-server` (amd64 and arm64), on `127.0.0.1:3099`, for a reverse proxy in front of it.
 
-A reverse proxy on the same machine, with [Caddy](https://caddyserver.com) (it gets the certificate itself):
-
-```
-notes.example.com {
-    reverse_proxy 127.0.0.1:3099
-}
-```
-
-Then set `TRUST_PROXY=uniquelocal` in `.env`, so the rate limit on wrong pairing codes sees your phone's address, not the proxy's (the proxy's requests reach the container from Docker's private network address), and run `docker compose up -d` again. With the port bound to `127.0.0.1`, nothing else can reach it to fake that address.
-
-Check it: `curl https://notes.example.com/health` answers 200 when the server is up and the vault has entries.
-
-The server won't start with no way in: it needs `secrets/devices.json` (made by the first `pair-device.sh`) or an `AUTH_TOKEN` in `.env`.
-
-## Pairing your phone
-
-1. On the server, run `scripts/pair-device.sh "My iPhone"`. It prints a one-time pairing link, valid for 10 minutes, and its QR code.
-2. On your iPhone, open Settings › **Notes Source**, choose **Server**, and tap **Set up server / pair**. (On first launch, the same screen is called **Connect to your vault**.)
-3. Open the pairing link, or tap the QR-code button next to the link field and scan the code. Confirm "Pair with *your server's address*?", and you're reading.
-
-The code in the link sits after the `#`, so it never reaches a web server or a link previewer. If `ots-cli` is on the PATH, the script also prints a one-time link to the pairing link, to send instead of the link itself.
-
-**More phones:** on a phone that's already paired, Settings › Notes Source › **Add a device** shows a QR code and a link for the next phone. **Paired devices** lists them all, and **Revoke** cuts one off.
-
-On the server:
-
-```bash
-scripts/devices.sh list           # id, name, paired, last seen, status
-scripts/devices.sh revoke <id>    # its token stops working on the next request
-scripts/devices.sh rotate <id>    # revoke, then a new pairing link for the same name
-```
-
-The scripts change `secrets/devices.json` in a one-off container of the server's image (`docker compose run`), so they work on a running server without a restart. Tokens and codes are stored only as SHA-256 hashes. Wrong pairing codes are limited to 10 per address an hour.
-
-## Keeping it running
-
-Docker doesn't restart a container whose healthcheck fails, only one whose process exits. `scripts/restart-if-unhealthy.sh` does, from cron:
-
-```
-*/5 * * * * /path/to/mdvju-server/scripts/restart-if-unhealthy.sh >> /tmp/mdvju-watchdog.log 2>&1
-```
-
-To update: `git pull`, then `docker compose up -d --build`.
-
-## Configuration
-
-All in `.env`; `.env.example` explains each one.
-
-| Variable | |
-|---|---|
-| `VAULT_HOST_PATH` | Required. The vault's folder on the host, mounted as `/vault`. |
-| `PUBLIC_URL` | Required. The server's address as the phone reaches it, for pairing links. |
-| `BIND_ADDRESS` | The host address the port is published on. Default `127.0.0.1`. |
-| `TRUST_PROXY` | Behind a reverse proxy: Express "trust proxy" (the proxy's IP or CIDR, `loopback`, `uniquelocal`, or a hop count). |
-| `AUTH_TOKEN` | Optional shared token, for entering the address and a token by hand instead of pairing. Remove it to allow paired devices only. |
-| `CORS_ORIGIN` | Only for a browser client. The iOS app needs none. |
-| `DEMO_PAIRING_CODE`, `DEMO_PAIRING_EXPIRES`, `DEMO_MAX_DEVICES` | A public demo server only: one reusable pairing code until a date. `scripts/demo-pair-link.sh` prints its link. Never set them on your own server. |
+Updating: [docs/upgrade.md](docs/upgrade.md). What changed: [CHANGELOG.md](CHANGELOG.md).
 
 ## Privacy
 
@@ -120,6 +63,10 @@ npm run build         # into dist/
 `src/` is the server; `shared/` is plain TypeScript with no dependencies that the mdvju app uses too (API types, path rules, pairing links, wikilink resolution, task lines, frontmatter), so the two can't disagree. `test/vectors/` are JSON test cases the app runs against its own code as well; see `test/vectors/README.md`. `test/fixture-vault/` is a small vault for the tests.
 
 To run it from source: `VAULT_ROOT=/path/to/vault SECRETS_DIR=./secrets PUBLIC_URL=http://localhost:3000 npm run dev` (port 3000 unless `PORT` is set).
+
+## How it's made
+
+mdvju is written with AI assistance: much of the code is drafted by AI coding agents. Nothing goes in unread. Every change is checked by the test suite, reviewed, and read by a human (the maintainer) before it is merged or released, and the maintainer is responsible for all of it. Security fixes get the same review plus tests for each case they cover.
 
 ## Links
 

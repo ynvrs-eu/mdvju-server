@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/ynvrs-eu/mdvju-server/discussions
+    about: Setting it up, how something works, a feature you'd like. Ask in Discussions.
+  - name: Security vulnerability
+    url: https://github.com/ynvrs-eu/mdvju-server/blob/main/SECURITY.md
+    about: Please don't open a public issue. Email security@mdvju.app instead (see SECURITY.md).
