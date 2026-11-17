@@ -24,4 +24,4 @@ Not in scope:
 
 ## Supported versions
 
-Only the latest release gets security fixes. Update with `git pull` and `docker compose up -d --build`.
+Only the latest release gets security fixes. Updating: see [docs/upgrade.md](docs/upgrade.md).
