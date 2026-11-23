@@ -3,9 +3,9 @@ import * as fs from "fs";
 import * as path from "path";
 import { listLevel } from "../shared/vault-queries";
 import type { VaultSnapshot } from "../shared/vault-snapshot";
-import { createVaultIndex } from "./vault-index";
-import { openVault, VaultError } from "./vault";
-import { makeEscapeSymlink, makeVault, type TestVault } from "./test-support";
+import { createVaultIndex } from "../src/vault-index";
+import { openVault, VaultError } from "../src/vault";
+import { makeEscapeSymlink, makeVault, type TestVault } from "./support";
 
 // shared/vault-queries.ts listLevel: one folder level from a snapshot, for
 // the app's folder source. The backend's /tree keeps reading the directory

@@ -7,8 +7,8 @@ import express from "express";
 import * as fs from "fs";
 import * as http from "http";
 import { AddressInfo } from "net";
-import { deriveAttachmentKey } from "./server";
-import { makeApp, makeVault, type TestVault } from "./test-support";
+import { deriveAttachmentKey } from "../src/server";
+import { makeApp, makeVault, type TestVault } from "./support";
 
 const TOKEN = "abort-test-token";
 /** The URL credential images use (?token= is refused). */

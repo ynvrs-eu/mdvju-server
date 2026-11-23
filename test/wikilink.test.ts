@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { resolveEmbed, resolveMarkdownEmbed, resolveWikilink } from "../shared/wikilink";
-import { createVaultIndex, type VaultSnapshot } from "./vault-index";
-import { makeVault, type TestVault } from "./test-support";
+import { createVaultIndex, type VaultSnapshot } from "../src/vault-index";
+import { makeVault, type TestVault } from "./support";
 
 describe("resolveWikilink (synthetic fixture vault)", () => {
   let vault: TestVault;

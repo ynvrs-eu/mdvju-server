@@ -2,8 +2,8 @@ import { afterEach, expect, it, vi } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
 import { NOTE_MAX_BYTES } from "../shared/note-size";
-import { createVaultIndex } from "./vault-index";
-import { makeVault, type TestVault } from "./test-support";
+import { createVaultIndex } from "../src/vault-index";
+import { makeVault, type TestVault } from "./support";
 
 let vault: TestVault | null = null;
 

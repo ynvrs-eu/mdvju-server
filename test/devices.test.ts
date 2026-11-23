@@ -10,8 +10,8 @@ import * as path from "path";
 import { promisify } from "util";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
-import { openRegistry, RegistryBusy, type DeviceRegistry } from "./devices";
-import { api, makeApp, makeVault, ROUTES, type TestVault } from "./test-support";
+import { openRegistry, RegistryBusy, type DeviceRegistry } from "../src/devices";
+import { api, makeApp, makeVault, ROUTES, type TestVault } from "./support";
 import { parsePairLink } from "../shared/pair-link";
 
 const SHARED = "shared-token-123";

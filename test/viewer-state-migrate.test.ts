@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
-import { migrateViewerStateDir, readViewerState } from "./viewer-state";
-import { makeVault, type TestVault } from "./test-support";
+import { migrateViewerStateDir, readViewerState } from "../src/viewer-state";
+import { makeVault, type TestVault } from "./support";
 
 // The state folder's move from .obsidian-mobile-viewer/ to .mdvju/, including the case Syncthing
 // makes: both folders there.

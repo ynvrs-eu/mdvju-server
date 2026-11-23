@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import * as path from "path";
 import { cleanVaultPath, isNotePath, normalizeVaultPath } from "../shared/vault-path-rules";
-import { resolveVaultPath } from "./vault-path";
-import { makeVault, type TestVault } from "./test-support";
+import { resolveVaultPath } from "../src/vault-path";
+import { makeVault, type TestVault } from "./support";
 
 // shared/vault-path-rules.ts, the string half of resolveVaultPath. The app's
 // folder source applies the same rule before its native module does its own

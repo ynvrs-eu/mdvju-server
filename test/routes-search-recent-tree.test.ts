@@ -12,7 +12,7 @@ import { describe, expect, it, beforeAll, afterAll, beforeEach, afterEach } from
 import request from "supertest";
 import * as fs from "fs";
 import * as path from "path";
-import { api, makeApp, makeEscapeSymlink, makeVault, type TestVault } from "./test-support";
+import { api, makeApp, makeEscapeSymlink, makeVault, type TestVault } from "./support";
 
 const TOKEN = "test-token-123";
 

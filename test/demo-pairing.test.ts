@@ -10,8 +10,8 @@ import * as path from "path";
 import { promisify } from "util";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
-import { openRegistry, parseDemoPairing, type DemoPairing, type DeviceRegistry } from "./devices";
-import { api, makeApp, makeVault, ROUTES, type TestVault } from "./test-support";
+import { openRegistry, parseDemoPairing, type DemoPairing, type DeviceRegistry } from "../src/devices";
+import { api, makeApp, makeVault, ROUTES, type TestVault } from "./support";
 import { parsePairLink } from "../shared/pair-link";
 
 // Delegates to the real one; B-devices-35 checks what it's called with.

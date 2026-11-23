@@ -10,7 +10,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { describe, expect, it, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import request from "supertest";
-import { api, DEVICE_ROUTES, makeApp, makeVault, OPEN_ROUTES, ROUTES, type TestVault } from "./test-support";
+import { api, DEVICE_ROUTES, makeApp, makeVault, OPEN_ROUTES, ROUTES, type TestVault } from "./support";
 
 const TOKEN = "test-token-123";
 // The attachment key, computed here independently of server.ts.
@@ -40,7 +40,7 @@ describe("GET /status", () => {
   });
 });
 
-// The route tables (test-support.ts) list every route the app registers,
+// The route tables (test/support.ts) list every route the app registers,
 // so a new route can't miss the auth tests below and in devices.test.ts.
 it("ROUTES, DEVICE_ROUTES and OPEN_ROUTES are exactly the registered routes", () => {
   const v = makeVault();

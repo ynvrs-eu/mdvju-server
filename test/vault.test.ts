@@ -4,8 +4,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
-import { openVault, VaultError } from "./vault";
-import { makeVault, type TestVault } from "./test-support";
+import { openVault, VaultError } from "../src/vault";
+import { makeVault, type TestVault } from "./support";
 
 let tmp: TestVault;
 let root: string;

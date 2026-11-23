@@ -7,7 +7,7 @@ import * as fs from "fs";
 import * as http from "http";
 import * as path from "path";
 import { AddressInfo } from "net";
-import { makeApp, makeVault, type TestVault } from "./test-support";
+import { makeApp, makeVault, type TestVault } from "./support";
 
 const TOKEN = "load-test-token";
 const NOTES = 30_000;

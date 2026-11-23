@@ -6,8 +6,8 @@ import { spawn } from "child_process";
 import * as http from "http";
 import * as path from "path";
 import { expect, it } from "vitest";
-import { deriveAttachmentKey } from "./server";
-import { makeVault } from "./test-support";
+import { deriveAttachmentKey } from "../src/server";
+import { makeVault } from "./support";
 
 const TOKEN = "shutdown-test-token";
 const SIZE = 32 * 1024 * 1024;

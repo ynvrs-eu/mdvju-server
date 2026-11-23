@@ -1,11 +1,11 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
-import { resolveVaultPath } from "./vault-path";
-import { sweepStaleTempFiles } from "./atomic-write";
-import { createVaultIndex } from "./vault-index";
+import { resolveVaultPath } from "../src/vault-path";
+import { sweepStaleTempFiles } from "../src/atomic-write";
+import { createVaultIndex } from "../src/vault-index";
 import { hasDisplayableContent } from "../shared/frontmatter";
-import { makeVault, type TestVault } from "./test-support";
+import { makeVault, type TestVault } from "./support";
 
 describe("resolveVaultPath", () => {
   let vault: TestVault;

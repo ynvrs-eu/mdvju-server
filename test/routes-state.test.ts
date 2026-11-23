@@ -5,7 +5,7 @@
 
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import request from "supertest";
-import { makeApp, makeVault, type TestVault } from "./test-support";
+import { makeApp, makeVault, type TestVault } from "./support";
 
 const TOKEN = "test-token-123";
 

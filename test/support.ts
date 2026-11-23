@@ -7,7 +7,7 @@ import request from "supertest";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import { createApp, type AppConfig } from "./server";
+import { createApp, type AppConfig } from "../src/server";
 
 export interface TestVault {
   /** The vault root. */

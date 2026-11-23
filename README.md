@@ -60,7 +60,7 @@ npm run typecheck     # and npm run typecheck:test for the tests
 npm run build         # into dist/
 ```
 
-`src/` is the server; `shared/` is plain TypeScript with no dependencies that the mdvju app uses too (API types, path rules, pairing links, wikilink resolution, task lines, frontmatter), so the two can't disagree. `test/vectors/` are JSON test cases the app runs against its own code as well; see `test/vectors/README.md`. `test/fixture-vault/` is a small vault for the tests.
+`src/` is the server and `test/` its tests (`test/support.ts` holds shared test helpers); `shared/` is plain TypeScript with no dependencies that the mdvju app uses too (API types, path rules, pairing links, wikilink resolution, task lines, frontmatter), so the two can't disagree. `test/vectors/` are JSON test cases the app runs against its own code as well; see `test/vectors/README.md`. `test/fixture-vault/` is a small vault for the tests.
 
 To run it from source: `VAULT_ROOT=/path/to/vault SECRETS_DIR=./secrets PUBLIC_URL=http://localhost:3000 npm run dev` (port 3000 unless `PORT` is set).
 

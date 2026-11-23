@@ -9,7 +9,7 @@
 import { describe, expect, it, afterEach } from "vitest";
 import * as fs from "fs";
 import * as path from "path";
-import { api, makeApp, makeEscapeSymlink, makeVault, type TestVault } from "./test-support";
+import { api, makeApp, makeEscapeSymlink, makeVault, type TestVault } from "./support";
 
 const SOURCE = "backend";
 const TOKEN = "test-token-123";

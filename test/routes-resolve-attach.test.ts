@@ -13,9 +13,9 @@ import { describe, expect, it, beforeAll, afterAll, beforeEach, afterEach, vi } 
 import request from "supertest";
 import * as fs from "fs";
 import * as path from "path";
-import { createAttachmentInfo, SIZE_MEMO_ENTRIES } from "./attachment-info";
-import { openVault } from "./vault";
-import { api, makeApp, makeEscapeSymlink, makeVault, type TestVault } from "./test-support";
+import { createAttachmentInfo, SIZE_MEMO_ENTRIES } from "../src/attachment-info";
+import { openVault } from "../src/vault";
+import { api, makeApp, makeEscapeSymlink, makeVault, type TestVault } from "./support";
 
 const TOKEN = "test-token-123";
 const PNG_BYTES = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
