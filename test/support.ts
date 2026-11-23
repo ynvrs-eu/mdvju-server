@@ -90,6 +90,7 @@ export const ROUTES: { method: "get" | "post"; url: string; query?: Record<strin
   { method: "get", url: "/status" },
   { method: "get", url: "/attachment-key" },
   { method: "get", url: "/file", query: { path: "Note.md" } },
+  { method: "get", url: "/file/download", query: { path: "Note.md" } },
   { method: "post", url: "/file/checkbox", body: { path: "Note.md", line: 3, checked: true, expectedLine: "- [ ] task" } },
   { method: "get", url: "/state" },
   { method: "post", url: "/home", body: { path: "Note.md" } },

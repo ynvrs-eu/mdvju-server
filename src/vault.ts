@@ -72,6 +72,32 @@ export function openVault(root: string) {
     return new VaultError("io", "failed to read file");
   }
 
+  // A file to stream (openAttachment, openNote). Non-blocking: see openAttachment.
+  async function openStream(resolved: string, mimeType: string, failure: string): Promise<Attachment> {
+    let stat: fs.Stats;
+    try {
+      stat = await fs.promises.stat(resolved);
+    } catch {
+      throw new VaultError("not-found", "file not found");
+    }
+    return {
+      mimeType,
+      size: stat.size,
+      mtimeMs: stat.mtimeMs,
+      async open(range) {
+        // Wait for the open, so a failure to open (EACCES, EMFILE) is
+        // still an error response rather than a cut-off stream.
+        const stream = fs.createReadStream(resolved, range);
+        try {
+          await once(stream, "open");
+        } catch {
+          throw new VaultError("io", failure);
+        }
+        return stream;
+      },
+    };
+  }
+
   function readFile(resolved: string): string {
     try {
       return fs.readFileSync(resolved, "utf-8");
@@ -169,28 +195,17 @@ export function openVault(root: string) {
      */
     async openAttachment(rel: string): Promise<Attachment> {
       const { resolved, mimeType } = resolveAttachment(rel);
-      let stat: fs.Stats;
-      try {
-        stat = await fs.promises.stat(resolved);
-      } catch {
-        throw new VaultError("not-found", "file not found");
-      }
-      return {
-        mimeType,
-        size: stat.size,
-        mtimeMs: stat.mtimeMs,
-        async open(range) {
-          // Wait for the open, so a failure to open (EACCES, EMFILE) is
-          // still an error response rather than a cut-off stream.
-          const stream = fs.createReadStream(resolved, range);
-          try {
-            await once(stream, "open");
-          } catch {
-            throw new VaultError("io", "failed to read attachment");
-          }
-          return stream;
-        },
-      };
+      return openStream(resolved, mimeType, "failed to read attachment");
+    },
+
+    /**
+     * A note's raw bytes, to stream whole, whatever its size (GET
+     * /file/download): the app's "Open in another app" for a note over
+     * NOTE_MAX_BYTES, which /file refuses. The path rules are readNote's
+     * (.md only); nothing is read into memory.
+     */
+    async openNote(rel: string): Promise<Attachment> {
+      return openStream(resolveNote(rel), "text/markdown; charset=utf-8", "failed to read file");
     },
 
     /**

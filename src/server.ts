@@ -387,6 +387,23 @@ export function createApp(config: AppConfig) {
     res.status(200).type("text/plain").send(content);
   });
 
+  // A note's raw bytes at any size, for the app's "Open in another app" on
+  // a note /file refuses as too large. Streamed, never read into memory;
+  // the Bearer header only (the attachment key opens /attachment alone).
+  // No ETag and no Range: it's a one-off download.
+  app.get("/file/download", asyncRoute(async (req: Request, res: Response) => {
+    const note = await vault.openNote(requiredString(req.query.path, "query param: path"));
+    const stream = await note.open();
+    if (res.destroyed) {
+      stream.destroy();
+      return;
+    }
+    res.status(200).setHeader("Content-Length", note.size);
+    res.setHeader("Content-Type", note.mimeType);
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    pipeline(stream, res, () => {});
+  }));
+
   // Toggles a single task-list checkbox in place -- the one deliberate
   // exception to this app's otherwise read-only stance (a
   // checkbox you can tap but not save is no use). `line`

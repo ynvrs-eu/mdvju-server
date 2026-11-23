@@ -6,6 +6,7 @@
 
 import { describe, expect, it, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import request from "supertest";
+import { createHmac } from "crypto";
 import * as fs from "fs";
 import * as path from "path";
 import { NOTE_MAX_BYTES, NOTE_TOO_LARGE_MESSAGE } from "../shared/note-size";
@@ -182,5 +183,71 @@ describe("file", () => {
     const at = await http.get("/file", { path: "Big/at.md" });
     expect(at.status).toBe(200);
     expect(at.text.length).toBe(NOTE_MAX_BYTES);
+    v.put("Big/under.md", "");
+    fs.truncateSync(path.join(v.root, "Big/under.md"), NOTE_MAX_BYTES - 1);
+    const under = await http.get("/file", { path: "Big/under.md" });
+    expect(under.status).toBe(200);
+    expect(under.text.length).toBe(NOTE_MAX_BYTES - 1);
+  });
+
+  it("B-file-09a: the cap is 5 MB (5 × 1024 × 1024 bytes) and the message is the one the app shows", () => {
+    expect(NOTE_MAX_BYTES).toBe(5 * 1024 * 1024);
+    expect(NOTE_TOO_LARGE_MESSAGE).toBe("This note is too large to show.");
+  });
+});
+
+// GET /file/download: a note's raw bytes at any size, for "Open in another
+// app" on a note /file refuses.
+describe("GET /file/download", () => {
+  let v: TestVault;
+  let app: ReturnType<typeof makeApp>;
+  let http: ReturnType<typeof api>;
+
+  beforeAll(() => {
+    v = makeVault({ "Notes/Hello.md": "# Hello\n\nżółw", "Notes/pic.png": "png" });
+    app = makeApp(v, { authToken: TOKEN });
+    http = api(app, TOKEN);
+  });
+
+  afterAll(() => v.cleanup());
+
+  it("B-file-10: a note over the cap downloads whole, as Markdown, with its length; /file still refuses it", async () => {
+    v.put("Big/over.md", "");
+    fs.truncateSync(path.join(v.root, "Big/over.md"), NOTE_MAX_BYTES + 1);
+    expect((await http.get("/file", { path: "Big/over.md" })).status).toBe(413);
+    const res = await http.get("/file/download", { path: "Big/over.md" }).buffer(true).parse((r, done) => {
+      const chunks: Buffer[] = [];
+      r.on("data", (c: Buffer) => chunks.push(c));
+      r.on("end", () => done(null, Buffer.concat(chunks)));
+    });
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toBe("text/markdown; charset=utf-8");
+    expect(res.headers["content-length"]).toBe(String(NOTE_MAX_BYTES + 1));
+    expect(res.headers["cache-control"]).toBe("no-store");
+    expect((res.body as Buffer).length).toBe(NOTE_MAX_BYTES + 1);
+  });
+
+  it("B-file-11: a small note downloads byte for byte", async () => {
+    const res = await http.get("/file/download", { path: "Notes/Hello.md" }).buffer(true).parse((r, done) => {
+      const chunks: Buffer[] = [];
+      r.on("data", (c: Buffer) => chunks.push(c));
+      r.on("end", () => done(null, Buffer.concat(chunks)));
+    });
+    expect(res.status).toBe(200);
+    expect((res.body as Buffer).equals(fs.readFileSync(path.join(v.root, "Notes/Hello.md")))).toBe(true);
+  });
+
+  it("B-file-12: only .md notes inside the vault; missing is 404, no path 400", async () => {
+    expect((await http.get("/file/download", { path: "Notes/pic.png" })).status).toBe(400);
+    expect((await http.get("/file/download", { path: "../outside.md" })).status).toBe(400);
+    expect((await http.get("/file/download", { path: ".obsidian/x.md" })).status).toBe(400);
+    expect((await http.get("/file/download", { path: "Notes/Nope.md" })).status).toBe(404);
+    expect((await http.get("/file/download")).status).toBe(400);
+  });
+
+  it("B-file-13: needs the Bearer header; the attachment key doesn't open it", async () => {
+    expect((await request(app).get("/file/download").query({ path: "Notes/Hello.md" })).status).toBe(401);
+    const key = createHmac("sha256", TOKEN).update("attachment-v1").digest("hex");
+    expect((await request(app).get("/file/download").query({ path: "Notes/Hello.md", key })).status).toBe(401);
   });
 });
