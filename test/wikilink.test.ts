@@ -6,6 +6,7 @@ import {
   resolveFreshIfUnsure,
   resolveMarkdownEmbed,
   resolveWikilink,
+  wikilinkNamesExactly,
   wikilinkPathMatched,
 } from "../shared/wikilink";
 import { createVaultIndex, type VaultSnapshot } from "../src/vault-index";
@@ -91,6 +92,13 @@ describe("the path match rules and resolveFreshIfUnsure", () => {
     expect(wikilinkPathMatched("Projects/my_app/design/x/screenshots.md#Top|alias", "Projects/My App/design/x/Screenshots.md")).toBe(true);
     expect(wikilinkPathMatched("Projects/App/design/x/Screenshots", "Projects/App/store/Screenshots.md")).toBe(false);
     expect(wikilinkPathMatched("Screenshots", "Projects/App/store/Screenshots.md")).toBe(true);
+  });
+
+  it("wikilinkNamesExactly: the path the link names, or with no path its file name; never an alias or a same-name note elsewhere", () => {
+    expect(wikilinkNamesExactly("Projects/my_app/design/x/Screenshots", "Projects/My App/design/x/Screenshots.md")).toBe(true);
+    expect(wikilinkNamesExactly("Projects/My%20App/design/x/Screenshots", "Misc/Screenshots.md")).toBe(false);
+    expect(wikilinkNamesExactly("screenshots.md#Top", "Misc/Screenshots.md")).toBe(true);
+    expect(wikilinkNamesExactly("Some Alias", "Misc/Screenshots.md")).toBe(false);
   });
 
   it("embedPathMatched: the file by its full path, or the note the embed names, or no path", () => {

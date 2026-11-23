@@ -77,6 +77,19 @@ export function wikilinkPathMatched(linkText: string, resolvedPath: string): boo
 }
 
 /**
+ * Whether `resolvedPath`, resolveWikilink's answer for `linkText`, is the
+ * note the link names by itself: its path (pass 1), or for a link with no
+ * path its file name (pass 2), never only a same-named note elsewhere or
+ * an alias. The app uses it to decide whether a second decode of an
+ * `/open` link's note name is kept.
+ */
+export function wikilinkNamesExactly(linkText: string, resolvedPath: string): boolean {
+  const cleaned = linkText.split("|")[0].split("#")[0].trim();
+  if (cleaned.includes("/")) return normalizePath(stripMdExt(resolvedPath)) === normalizePath(cleaned);
+  return normalizeSegment(basenameNoExt(resolvedPath)) === normalizeSegment(basenameNoExt(cleaned));
+}
+
+/**
  * embedPathMatched is wikilinkPathMatched for resolveEmbed: the answer is
  * the file the embed's path names (its full name, extension included), or
  * the note it names, or the embed names no path.
