@@ -65,6 +65,71 @@ export function resolveWikilink(linkText: string, vault: VaultSnapshot): string 
 }
 
 /**
+ * Whether `resolvedPath`, resolveWikilink's answer for `linkText`, is the
+ * path the link names (pass 1), or the link names no path. False for a
+ * link with a path answered by a later pass (another note of the same file
+ * name or alias): in a stale index, the note the path names may only be
+ * missing because it's new.
+ */
+export function wikilinkPathMatched(linkText: string, resolvedPath: string): boolean {
+  const cleaned = linkText.split("|")[0].split("#")[0].trim();
+  return !cleaned.includes("/") || normalizePath(stripMdExt(resolvedPath)) === normalizePath(cleaned);
+}
+
+/**
+ * embedPathMatched is wikilinkPathMatched for resolveEmbed: the answer is
+ * the file the embed's path names (its full name, extension included), or
+ * the note it names, or the embed names no path.
+ */
+export function embedPathMatched(linkText: string, resolvedPath: string): boolean {
+  const cleaned = linkText.split("|")[0].split("#")[0].trim();
+  const segments = (p: string) => p.split("/").map(normalizeSegment).join("/");
+  return !cleaned.includes("/") || segments(resolvedPath) === segments(cleaned) || wikilinkPathMatched(cleaned, resolvedPath);
+}
+
+/**
+ * The same for resolveMarkdownEmbed: the answer is its first candidate,
+ * the target relative to the note's folder (or the one candidate of a `/`,
+ * `./` or `../` target). An answer from the vault root or a path-end match
+ * may stand only because the first candidate is new.
+ */
+export function markdownEmbedPathMatched(target: string, fromNote: string, resolvedPath: string): boolean {
+  const cleaned = target.trim();
+  const segments = cleaned.split("/");
+  if (cleaned.startsWith("/") || segments.includes(".") || segments.includes("..")) return true;
+  const note = normalizeVaultPath(fromNote);
+  const relative = note === null ? null : joinVaultPath(note.split("/").slice(0, -1), segments);
+  return relative !== null && relative.toLowerCase() === resolvedPath.toLowerCase();
+}
+
+/**
+ * A lookup on a cached index snapshot (`cached`), looked up again on a
+ * fresh one (`fresh`) when it misses or its answer isn't the one the
+ * link's path names (`matched`: wikilinkPathMatched and its siblings).
+ * The snapshot may predate the file: a miss could be a new file, and a
+ * hit of the same name elsewhere could stand in for one.
+ * A rebuild that fails keeps the first answer: `fresh` resolving null, or
+ * rejecting after a hit (a rejection after a miss is passed on).
+ */
+export async function resolveFreshIfUnsure<S>(
+  find: (snapshot: S) => string | null,
+  matched: (path: string) => boolean,
+  cached: () => Promise<S>,
+  fresh: () => Promise<S | null>,
+): Promise<string | null> {
+  const first = find(await cached());
+  if (first !== null && matched(first)) return first;
+  let snapshot: S | null;
+  try {
+    snapshot = await fresh();
+  } catch (err) {
+    if (first !== null) return first;
+    throw err;
+  }
+  return (snapshot === null ? null : find(snapshot)) ?? first;
+}
+
+/**
  * Resolves the target of an Obsidian `![[embed]]` (an attachment, or a note)
  * to a vault-relative file path.
  *

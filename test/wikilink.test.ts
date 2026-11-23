@@ -1,5 +1,13 @@
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
-import { resolveEmbed, resolveMarkdownEmbed, resolveWikilink } from "../shared/wikilink";
+import {
+  embedPathMatched,
+  markdownEmbedPathMatched,
+  resolveEmbed,
+  resolveFreshIfUnsure,
+  resolveMarkdownEmbed,
+  resolveWikilink,
+  wikilinkPathMatched,
+} from "../shared/wikilink";
 import { createVaultIndex, type VaultSnapshot } from "../src/vault-index";
 import { makeVault, type TestVault } from "./support";
 
@@ -74,6 +82,50 @@ describe("resolveWikilink (synthetic fixture vault)", () => {
   it("prefers a direct filename match over an alias match", () => {
     // "Mini PC" is the real filename; alias "miniOne" should not shadow it.
     expect(resolveWikilink("Mini PC", snap)).toBe("Gear/Mini PC.md");
+  });
+});
+
+describe("the path match rules and resolveFreshIfUnsure", () => {
+  it("wikilinkPathMatched: true for the path the link names, or a link with no path; false for a same-name note elsewhere", () => {
+    expect(wikilinkPathMatched("Projects/App/design/x/Screenshots", "Projects/App/design/x/Screenshots.md")).toBe(true);
+    expect(wikilinkPathMatched("Projects/my_app/design/x/screenshots.md#Top|alias", "Projects/My App/design/x/Screenshots.md")).toBe(true);
+    expect(wikilinkPathMatched("Projects/App/design/x/Screenshots", "Projects/App/store/Screenshots.md")).toBe(false);
+    expect(wikilinkPathMatched("Screenshots", "Projects/App/store/Screenshots.md")).toBe(true);
+  });
+
+  it("embedPathMatched: the file by its full path, or the note the embed names, or no path", () => {
+    expect(embedPathMatched("design/x/Shot.PNG|300", "design/x/shot.png")).toBe(true);
+    expect(embedPathMatched("design/x/Note#Top", "design/x/Note.md")).toBe(true);
+    expect(embedPathMatched("design/x/shot.png", "_attachments/shot.png")).toBe(false);
+    expect(embedPathMatched("shot.png", "_attachments/shot.png")).toBe(true);
+  });
+
+  it("markdownEmbedPathMatched: only the target relative to the note's folder, or a target with one candidate", () => {
+    expect(markdownEmbedPathMatched("img/a.png", "d/Note.md", "d/img/A.png")).toBe(true);
+    expect(markdownEmbedPathMatched("img/a.png", "d/Note.md", "img/a.png")).toBe(false);
+    expect(markdownEmbedPathMatched("img/a.png", "d/Note.md", "x/img/a.png")).toBe(false);
+    expect(markdownEmbedPathMatched("/img/a.png", "d/Note.md", "img/a.png")).toBe(true);
+    expect(markdownEmbedPathMatched("../img/a.png", "d/e/Note.md", "d/img/a.png")).toBe(true);
+  });
+
+  it("resolveFreshIfUnsure: fresh only on a miss or an unmatched hit; a failed rebuild keeps the hit, a miss passes it on", async () => {
+    const find = (s: string) => (s === "none" ? null : s);
+    let freshCalls = 0;
+    const fresh = (s: string | null) => async () => {
+      freshCalls++;
+      return s;
+    };
+    expect(await resolveFreshIfUnsure(find, () => true, async () => "a.md", fresh("b.md"))).toBe("a.md");
+    expect(freshCalls).toBe(0);
+    expect(await resolveFreshIfUnsure(find, () => false, async () => "a.md", fresh("b.md"))).toBe("b.md");
+    expect(await resolveFreshIfUnsure(find, () => false, async () => "a.md", fresh("none"))).toBe("a.md");
+    expect(await resolveFreshIfUnsure(find, () => false, async () => "a.md", fresh(null))).toBe("a.md");
+    expect(await resolveFreshIfUnsure(find, () => true, async () => "none", fresh("b.md"))).toBe("b.md");
+    const boom = async () => {
+      throw new Error("boom");
+    };
+    expect(await resolveFreshIfUnsure(find, () => false, async () => "a.md", boom)).toBe("a.md");
+    await expect(resolveFreshIfUnsure(find, () => false, async () => "none", boom)).rejects.toThrow("boom");
   });
 });
 

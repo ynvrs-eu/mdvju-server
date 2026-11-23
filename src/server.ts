@@ -38,7 +38,15 @@ import {
   type RecentCursor,
 } from "../shared/vault-queries";
 import { openVault, VaultError, VaultErrorKind } from "./vault";
-import { resolveEmbed, resolveMarkdownEmbed, resolveWikilink } from "../shared/wikilink";
+import {
+  embedPathMatched,
+  markdownEmbedPathMatched,
+  resolveEmbed,
+  resolveFreshIfUnsure,
+  resolveMarkdownEmbed,
+  resolveWikilink,
+  wikilinkPathMatched,
+} from "../shared/wikilink";
 
 // Constant-time token check: comparing SHA-256 digests
 // keeps both sides the same length, so neither the comparison's timing nor
@@ -174,17 +182,15 @@ function requiredString(value: unknown, what: string): string {
 }
 
 /**
- * A missed lookup, tried again on a fresh index (VaultIndex.fresh). A
- * rebuild that fails answers null, the miss it was, not a 500. The wait is one walk at most once per TTL: 116-199 ms warm and
- * 483-763 ms cold over a vault of 15,181 files and 4,155 notes on an
- * NFS mount, so it isn't raced against a timer.
+ * A lookup on the cached snapshot, tried again on a fresh index
+ * (VaultIndex.fresh) when it misses or misses the path the link names
+ * (resolveFreshIfUnsure). A rebuild that fails keeps the first answer (a
+ * miss answers null, not a 500). The wait is one walk at most once per
+ * TTL: 116-199 ms warm and 483-763 ms cold over a vault of 15,181 files
+ * and 4,155 notes on an NFS mount, so it isn't raced against a timer.
  */
-async function freshOrNull(index: VaultIndex, lookup: (snapshot: IndexSnapshot) => string | null): Promise<string | null> {
-  try {
-    return lookup(await index.fresh());
-  } catch {
-    return null;
-  }
+function lookUp(index: VaultIndex, find: (snapshot: IndexSnapshot) => string | null, matched: (path: string) => boolean): Promise<string | null> {
+  return resolveFreshIfUnsure(find, matched, () => index.get(), () => index.fresh().catch(() => null));
 }
 
 export function createApp(config: AppConfig) {
@@ -496,9 +502,9 @@ export function createApp(config: AppConfig) {
     "/resolve",
     asyncRoute(async (req: Request, res: Response) => {
       const link = requiredString(req.query.link, "query param: link");
-      // A miss is checked again on a fresh index (freshOrNull): the stale
-      // snapshot may predate the note.
-      const resolved = resolveWikilink(link, await index.get()) ?? (await freshOrNull(index, (s) => resolveWikilink(link, s)));
+      // A miss, or a path link answered by another note of the same name, is
+      // checked again on a fresh index (lookUp): the note may be new.
+      const resolved = await lookUp(index, (s) => resolveWikilink(link, s), (p) => wikilinkPathMatched(link, p));
       res.status(200).json({ path: resolved } satisfies ResolveResponse);
     }),
   );
@@ -516,9 +522,10 @@ export function createApp(config: AppConfig) {
       // resolved relative to that note.
       const from = req.query.from === undefined ? undefined : requiredString(req.query.from, "query param: from");
       const find = (s: IndexSnapshot) => (from === undefined ? resolveEmbed(link, s) : resolveMarkdownEmbed(link, from, s));
-      // A miss is checked again on a fresh index (freshOrNull): the stale
-      // snapshot may predate the file.
-      const resolved = find(await index.get()) ?? (await freshOrNull(index, find));
+      // A miss, or a path answered by another file of the same name, is
+      // checked again on a fresh index (lookUp): the file may be new.
+      const matched = (p: string) => (from === undefined ? embedPathMatched(link, p) : markdownEmbedPathMatched(link, from, p));
+      const resolved = await lookUp(index, find, matched);
       const body: ResolveEmbedResponse = resolved === null ? { path: null } : { path: resolved, ...(await attachments.info(resolved)) };
       res.status(200).json(body);
     }),

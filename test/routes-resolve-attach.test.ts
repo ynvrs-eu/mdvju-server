@@ -164,6 +164,42 @@ describe("B-index-03: a file added after the last snapshot resolves on its first
     expect(res.body.path).toBe(`${NOTE_DIR}/Powtórka - Ukształtowanie terenu.md`);
   });
 
+  // An open link to a note written after the last snapshot opened another
+  // note of the same name: the path missed in the stale snapshot, the
+  // file-name pass found an older Screenshots.md, and that hit never
+  // reached the fresh look.
+  it("B-index-04: a path link to a new note isn't answered with an older note of the same name", async () => {
+    v.put("Projects/App/store/Screenshots.md", "# old\n");
+    await new Promise((r) => setTimeout(r, TTL_MS * 3));
+    expect((await http.get("/resolve", { link: "Screenshots" })).body.path).toBe("Projects/App/store/Screenshots.md");
+    await new Promise((r) => setTimeout(r, TTL_MS * 3));
+    const fresh = "Projects/App/design/outline-2026-11-17/Screenshots.md";
+    v.put(fresh, "# new\n");
+    const res = await http.get("/resolve", { link: "Projects/App/design/outline-2026-11-17/Screenshots" });
+    expect(res.body.path).toBe(fresh);
+  });
+
+  // The same in /resolve-embed: a path embed, and a Markdown image relative
+  // to its note, to a file newer than the snapshot.
+  it("B-index-04: a path embed to a new file isn't answered with an older file of the same name", async () => {
+    v.put("_attachments/shot.png", PNG_BYTES);
+    await new Promise((r) => setTimeout(r, TTL_MS * 3));
+    expect((await http.get("/resolve-embed", { link: "shot.png" })).body.path).toBe("_attachments/shot.png");
+    await new Promise((r) => setTimeout(r, TTL_MS * 3));
+    v.put("design/new-2026-11-18/shot.png", PNG_BYTES);
+    expect((await http.get("/resolve-embed", { link: "design/new-2026-11-18/shot.png" })).body.path).toBe("design/new-2026-11-18/shot.png");
+  });
+
+  it("B-index-04: a Markdown image relative to its note, to a new file, isn't answered from the vault root", async () => {
+    v.put("img/shot2.png", PNG_BYTES);
+    await new Promise((r) => setTimeout(r, TTL_MS * 3));
+    expect((await http.get("/resolve-embed", { link: "img/shot2.png", from: "Home.md" })).body.path).toBe("img/shot2.png");
+    await new Promise((r) => setTimeout(r, TTL_MS * 3));
+    v.put("design/new-2026-11-18/img/shot2.png", PNG_BYTES);
+    const res = await http.get("/resolve-embed", { link: "img/shot2.png", from: "design/new-2026-11-18/Screenshots.md" });
+    expect(res.body.path).toBe("design/new-2026-11-18/img/shot2.png");
+  });
+
   it("a link that really is missing still answers null", async () => {
     expect((await http.get("/resolve-embed", { link: "nowhere.jpg" })).body.path).toBeNull();
     expect((await http.get("/resolve", { link: "Nowhere" })).body.path).toBeNull();
