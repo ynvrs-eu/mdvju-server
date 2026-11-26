@@ -81,4 +81,6 @@ Copyright (C) 2026 Michał Wojtera.
 
 The mdvju server is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License, version 3 ([LICENSE](LICENSE)). If you offer a changed version to other people as a network service, the licence asks you to share your changes too.
 
+The code in [`shared/`](shared/) is under the MIT licence instead ([shared/LICENSE](shared/LICENSE)). It's the part the server and the mdvju app both use (API types, path rules, wikilinks, checkbox edits), so it can be used in other software, closed or open.
+
 The name mdvju is not covered by the licence: see [NOTICE](NOTICE).

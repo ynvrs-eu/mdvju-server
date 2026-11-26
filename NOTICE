@@ -1,7 +1,8 @@
 mdvju server
 Copyright (C) 2026 Michał Wojtera
 
-Licensed under the GNU Affero General Public License, version 3 (see LICENSE).
+Licensed under the GNU Affero General Public License, version 3 (see LICENSE),
+except the files in shared/, which are under the MIT licence (see shared/LICENSE).
 
 Trademark: "mdvju" and its logo are the names of Michał Wojtera's app and
 service. The licence covers the code, not the name. A fork or a modified

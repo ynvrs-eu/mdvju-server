@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "The server for the mdvju iPhone app: serves an Obsidian-style Markdown vault from your own machine",
   "private": true,
-  "license": "AGPL-3.0-only",
+  "license": "(AGPL-3.0-only AND MIT)",
   "author": "Michał Wojtera",
   "type": "commonjs",
   "main": "dist/src/server.js",
